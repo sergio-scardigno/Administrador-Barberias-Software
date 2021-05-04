@@ -24,7 +24,8 @@
 
                     <label class="block text-sm font-medium text-gray-700">Ingresar Apellido</label>
 
-                    <input type="text" name="apellido" id="apellido" autocomplete="family-name">
+                    <input type="text" name="apellido" id="apellido" autocomplete="family-name" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full
+                           shadow-sm sm:text-sm border-gray-300 rounded-md">
 
 
                     <label class="block text-sm font-medium text-gray-700">Ingresar correo</label>
@@ -46,7 +47,7 @@
                                 class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm
                                 text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700
                                 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                            Save
+                            Guardar
                         </button>
                     </div>
                 </div>
@@ -57,21 +58,22 @@
             <table class="table-auto">
                 <thead>
                 <tr>
-                    <th>Nombre y Apellido</th>
-                    <th>Correo</th>
-                    <th>Telefono</th>
-                    <th>Acciones</th>
+                    <th class="text-left pr-12 border-2 bg-indigo-200">Nombre y Apellido</th>
+                    <th class="text-left pr-12 border-2 bg-indigo-200">Correo</th>
+                    <th class="text-left pr-12 border-2 bg-indigo-200">Telefono</th>
+                    <th class="text-left pr-12 border-2 bg-indigo-200">Editar</th>
+                    <th class="text-left border-2 bg-indigo-200">Borrar</th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach ($clientes as $cliente)
                     <tr>
-                        <td>{{ $cliente->nombre }}, {{ $cliente->apellido }}</td>
-                        <td>{{ $cliente->correo }}</td>
-                        <td>{{ $cliente->telefono }}</td>
-                        <td><a href="{{ route('cliente.edit', $cliente->id) }}"
-                               class="btn btn-secondary" role="button">Editar</a></td>
-                        <td>
+                        <td class="text-left pr-12 border-2 bg-indigo-100">{{ $cliente->nombre }}, {{ $cliente->apellido }}</td>
+                        <td class="text-left pr-12 border-2 bg-indigo-100">{{ $cliente->correo }}</td>
+                        <td class="text-left pr-12 border-2 bg-indigo-100">{{ $cliente->telefono }}</td>
+                        <td class="text-left pr-12 border-2 bg-indigo-100"><a href="{{ route('cliente.edit', $cliente->id) }}"
+                               class="bg-indigo-300 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" role="button">Editar</a></td>
+                        <td class="text-left pr- border-2 bg-indigo-100">
                             <form action="{{ route('cliente.destroy', $cliente->id) }}" method="get">
                                 {{ csrf_field() }}
                                 <input type="hidden" name="_method">
