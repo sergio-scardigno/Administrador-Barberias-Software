@@ -67,37 +67,46 @@
         </div>
 
 
+
+
         <div class="m-10">
 
             <div class="grid grid-flow-col auto-cols-max">
                 <table class="table-auto">
                     <thead>
                     <tr >
+{{--                        <th class="border-2 text-left pr-12 bg-indigo-200">id</th>--}}
                         <th class="border-2 text-left pr-12 bg-indigo-200">Barbero</th>
                         <th class="border-2 text-left pr-12 bg-indigo-200">Cliente</th>
                         <th class="border-2 text-left pr-12 bg-indigo-200">Descripción</th>
                         <th class="border-2 text-left pr-12 bg-indigo-200">Monto</th>
                         <th class="border-2 text-left pr-12 bg-indigo-200">Fecha</th>
+                        <th class="border-2 text-left pr-12 bg-indigo-200">Editar</th>
+                        <th class="border-2 text-left pr-12 bg-indigo-200">Borrar</th>
+
                     </tr>
                     </thead>
                     <tbody>
                     @foreach ($clientes as $cliente)
                         <tr>
+{{--                            <td class="border-2 text-left pr-12 bg-indigo-100">{{ $cliente->id }}</td>--}}
                             <td class="border-2 text-left pr-12 bg-indigo-100">{{ $cliente->nombre_barbers }}</td>
                             <td class="border-2 text-left pr-12 bg-indigo-100">{{ $cliente->cliente_nombre }}, {{ $cliente->apellido }}</td>
                             <td class="border-2 text-left pr-12 bg-indigo-100">{{ $cliente->tipo_nombre }}</td>
                             <td class="border-2 text-left pr-12 bg-indigo-100">{{ $cliente->monto }}</td>
-                            <td class="border-2 text-left pr-12 bg-indigo-100">{{ $cliente->fecha }}</td>
-                            {{--                            <td><a href="{{ route('cliente.edit', $cliente->id) }}"--}}
-                            {{--                                   class="btn btn-secondary" role="button">Editar</a></td>--}}
+                            <td class="border-2 text-left pr-6 bg-indigo-100">{{ $cliente->fecha }}</td>
+                                                        <td>
+                                                            <a href="{{ route('corte.edit', $cliente->id) }}"
+                                                               class="bg-indigo-300 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" role="button">Editar</a>
+                                                        </td>
                             <td>
-                                {{--                                <form action="{{ route('cliente.destroy', $cliente->id) }}" method="get">--}}
-                                {{--                                    {{ csrf_field() }}--}}
-                                {{--                                    <input type="hidden" name="_method">--}}
-                                {{--                                    <button class="bg-red-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">--}}
-                                {{--                                        BORRAR--}}
-                                {{--                                    </button>--}}
-                                {{--                                </form>--}}
+                                                                <form action="{{ route('corte.destroy', $cliente->id) }}" method="get">
+                                                                    {{ csrf_field() }}
+                                                                    <input type="hidden" name="_method">
+                                                                    <button class="bg-red-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                                                        BORRAR
+                                                                    </button>
+                                                                </form>
                             </td>
                         </tr>
 
@@ -107,7 +116,19 @@
 
             </div>
 
-
+            <!-- Chart's container -->
+            <div id="chart" style="height: 300px;"></div>
+            <!-- Charting library -->
+            <script src="https://unpkg.com/echarts/dist/echarts.min.js"></script>
+            <!-- Chartisan -->
+            <script src="https://unpkg.com/@chartisan/echarts/dist/chartisan_echarts.js"></script>
+            <!-- Your application script -->
+            <script>
+                const chart = new Chartisan({
+                    el: '#chart',
+                    url: "@chart('chart')",
+                });
+            </script>
 
 
 

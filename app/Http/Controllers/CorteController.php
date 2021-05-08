@@ -26,11 +26,20 @@ class CorteController extends Controller
 
     public function index()
     {
+
+//        Funcion que muesta la tabla de dashboard con nombres de Barber y clientes
+
+//        Empieza acá
+
         $clientes = Corte::join('clientes', 'clientes_id', '=', 'clientes.id')
             ->join('barbers', 'barbers_id', '=', 'barbers.id')
             ->join('tipos', 'tipos_id', '=', 'tipos.id')
             ->select('cortes.*', 'barbers.nombre as nombre_barbers', 'tipos.nombres as tipo_nombre', 'clientes.nombre as cliente_nombre', 'apellido')
             ->get();
+//        Termina acá
+
+
+//        dd($clientes);
 
         $cliente_totales = Cliente::all();
         $barbers = Barber::all();
@@ -38,7 +47,7 @@ class CorteController extends Controller
         $tipos = Tipo::all();
 //        $gastos = Gasto::all();
 
-//dd($clientes);
+
 
         return view('/dashboard')->with('barbers', $barbers)->with('clientes', $clientes)->with('tipos', $tipos)->with('cortes', $cortes)->with('cliente_totales', $cliente_totales);
 
@@ -102,9 +111,25 @@ class CorteController extends Controller
      * //     * @param int $id
      * //     * @return \Illuminate\Http\Response
      * //     */
+
     public function edit($id)
     {
-        //
+
+
+        $cortes = Corte::find($id);
+
+        $clientes = Corte::join('clientes', 'clientes_id', '=', 'clientes.id')
+            ->join('barbers', 'barbers_id', '=', 'barbers.id')
+            ->join('tipos', 'tipos_id', '=', 'tipos.id')
+            ->select('cortes.*', 'barbers.nombre as nombre_barbers', 'tipos.nombres as tipo_nombre', 'clientes.nombre as cliente_nombre', 'apellido')
+            ->get();
+        $cliente_totales = Cliente::all();
+        $barbers = Barber::all();
+//        $cortes = Corte::all();
+        $tipos = Tipo::all();
+
+
+        return view ('/corte.edit')->with('barbers', $barbers)->with('clientes', $clientes)->with('tipos', $tipos)->with('cortes', $cortes)->with('cliente_totales', $cliente_totales);
     }
 
     /**
@@ -116,7 +141,20 @@ class CorteController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+
+        $cortes = Corte::find($id);
+
+        $cortes->update([
+            'barbers_id' => $request->barbers_id,
+            'cliente_id' => $request->cliente_id,
+            'tipos_id' => $request->tipos_id,
+            'fecha' => $request->fecha,
+            'monto' => $request->monto,
+            'descripcion' => $request->descripcion,
+        ]);
+
+        return redirect('/dashboard')->with('success', 'Task has been added');
     }
 
     /**
@@ -128,6 +166,40 @@ class CorteController extends Controller
 
     public function destroy($id)
     {
-        //
+        $corte = Corte::where('id',$id)->first();;
+        $corte->delete();
+        return back()->with('info', 'Fue eliminado exitosamente');
     }
+
+    public function delete()
+    {
+
+
+        $cortes_borrados = Corte::onlyTrashed()
+            ->join('clientes', 'clientes_id', '=', 'clientes.id')
+            ->join('barbers', 'barbers_id', '=', 'barbers.id')
+            ->join('tipos', 'tipos_id', '=', 'tipos.id')
+            ->select('cortes.*', 'barbers.nombre as nombre_barbers', 'tipos.nombres as tipo_nombre', 'clientes.nombre as cliente_nombre', 'apellido')
+            ->get();
+
+//        dd($cortes_borrados);
+
+        return view('/corte.delete')->with('cortes_borrados', $cortes_borrados);
+
+    }
+
+    public function restore( $id )
+    {
+        //Indicamos que la busqueda se haga en los registros eliminados con withTrashed
+
+        $corte = Corte::withTrashed()->where('id', '=', $id)->first();
+
+        //Restauramos el registro
+        $corte->restore();
+
+        return redirect('/dashboard')->with('success', 'Task has been added');
+    }
+
 }
+
+

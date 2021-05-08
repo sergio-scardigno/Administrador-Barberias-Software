@@ -21,6 +21,7 @@ class CreateCortesTable extends Migration
             $table->text('descripcion');
             $table->foreignId('barbers_id')->constrained();
             $table->integer('monto');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
