@@ -46,6 +46,15 @@ class ClienteController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+
+            'nombre' => 'bail|required|max:50',
+            'apellido' => 'required|max:200',
+            'correo' => 'required|mail|max:200',
+            'telefono' => 'required|max:15',
+
+        ]);
+
         $cliente = new Cliente ([
             'nombre' => $request->nombre,
             'apellido' => $request->apellido,
@@ -94,6 +103,15 @@ class ClienteController extends Controller
     public function update(Request $request, $id)
     {
         $cliente = Cliente::find($id);
+
+        $this->validate($request, [
+
+            'nombre' => 'bail|required|max:50',
+            'apellido' => 'required|max:200',
+            'correo' => 'required|email|max:200',
+            'telefono' => 'required|max:15',
+
+        ]);
 
         $cliente->update([
             'nombre' => $request->nombre,

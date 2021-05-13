@@ -8,6 +8,7 @@
     <div class="grid grid-cols-3 gap-4">
 
         <div class="m-10">
+            @include('components.mensaje')
             <form action="{{ route('barber.store') }}" method="get">
                 @method('get')
                 {{--                @csrf--}}

@@ -8,6 +8,7 @@
     <div class="grid grid-cols-3 gap-4">
 
         <div class="m-10">
+            @include('components.mensaje')
             <form action="{{ route('corte.store') }}" method="POST">
                 @method('get')
                 {{--                @csrf--}}
@@ -127,6 +128,7 @@
                 const chart = new Chartisan({
                     el: '#chart',
                     url: "@chart('chart')",
+
                 });
             </script>
 

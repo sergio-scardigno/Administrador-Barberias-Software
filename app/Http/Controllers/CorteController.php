@@ -35,7 +35,8 @@ class CorteController extends Controller
             ->join('barbers', 'barbers_id', '=', 'barbers.id')
             ->join('tipos', 'tipos_id', '=', 'tipos.id')
             ->select('cortes.*', 'barbers.nombre as nombre_barbers', 'tipos.nombres as tipo_nombre', 'clientes.nombre as cliente_nombre', 'apellido')
-            ->get();
+            ->orderBy('fecha', 'desc')
+            ->paginate(6);            ;
 //        Termina acá
 
 
@@ -71,13 +72,16 @@ class CorteController extends Controller
      * //     */
     public function store(Request $request)
     {
-//        $this->validate($request, [
-//
-////            'name' => 'bail|required|max:50',
-////            'description' => 'required|max:200',
-////            'status_id' => 'required|max:200',
-//
-//        ]);
+        $this->validate($request, [
+
+            'cliente_id' => 'bail|required|max:50',
+            'tipos_id' => 'required|max:200',
+            'fecha' => 'required|date',
+            'descripcion' => 'required|max:200',
+            'barbers_id' => 'required|',
+            'monto' => 'required|max:200',
+
+        ]);
 //
         $corte = new Corte ([
             'clientes_id' => $request->cliente_id,
@@ -144,6 +148,17 @@ class CorteController extends Controller
 
 
         $cortes = Corte::find($id);
+
+        $this->validate($request, [
+
+            'barbers_id' => 'bail|required|max:50',
+            'cliente_id' => 'required|max:200',
+            'tipos_id' => 'required',
+            'fecha' => 'required|max:200|date',
+            'monto' => 'required|',
+            'descripcion' => 'required|max:200',
+
+        ]);
 
         $cortes->update([
             'barbers_id' => $request->barbers_id,

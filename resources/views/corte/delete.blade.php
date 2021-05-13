@@ -29,8 +29,9 @@
                         <td class="border-2 text-left pr-6 bg-indigo-100">{{ $cortes_borrado->monto }}</td>
                         <td class="border-2 text-left pr-6 bg-indigo-100"><a
                                 href="{{ route('restore.delete', $cortes_borrado->id) }}"
-                                class="bg-indigo-300 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                                role="button">Restaurar</a></td>
+                                class="bg-indigo-300 hover:bg-blue-700 text-white font-bold py-0 px-2 rounded"
+                                role="button">Restaurar</a>
+                        </td>
 
                         </tbody>
                     @endforeach

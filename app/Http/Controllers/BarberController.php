@@ -36,6 +36,12 @@ class BarberController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+
+            'nombre' => 'bail|required|max:50',
+
+        ]);
+
         $Barber = new Barber ([
             'nombre' => $request->nombre,
 
@@ -86,6 +92,10 @@ class BarberController extends Controller
     public function update(Request $request, $id)
     {
         $barber = Barber::find($id);
+
+        $this->validate($request, [
+            'nombre' => 'bail|required|max:50',
+        ]);
 
         $barber->update([
             'nombre' => $request->nombre,

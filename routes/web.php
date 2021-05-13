@@ -26,15 +26,9 @@ Route::get('corte.store',[CorteController::class,'store'])->name('corte.store');
 Route::get('corte/{id}',[CorteController::class,'edit'])->name('corte.edit');
 Route::patch('/corte/{id}', [CorteController::class,'update'])->name('corte.update');
 Route::get('corte/{id}/destroy',[CorteController::class,'destroy'])->name('corte.destroy');
+
 Route::get('borrados/',[CorteController::class,'delete'])->name('corte.delete');
 Route::get('borrados/{id}', [CorteController::class,'restore'])->name('restore.delete');
-
-
-
-
-
-
-
 
 Route::get('/barber', [BarberController::class, 'index'])->middleware(['auth'])->name('barber');
 Route::get('barber.store',[BarberController::class,'store'])->name('barber.store');
@@ -49,12 +43,6 @@ Route::patch('/cliente/{id}', [ClienteController::class,'update'])->name('client
 Route::get('cliente/{id}/destroy',[ClienteController::class,'destroy'])->name('cliente.destroy');
 
 Route::get('/chart',[ChartController::class,'index']);
-
-
-
-
-
-
 //Route::resource('/dashboard', CorteController::class);
 
 require __DIR__.'/auth.php';
