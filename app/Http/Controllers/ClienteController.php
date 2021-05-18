@@ -50,7 +50,7 @@ class ClienteController extends Controller
 
             'nombre' => 'bail|required|max:50',
             'apellido' => 'required|max:200',
-            'correo' => 'required|mail|max:200',
+            'correo' => 'email|max:200',
             'telefono' => 'required|max:15',
 
         ]);
@@ -112,7 +112,7 @@ class ClienteController extends Controller
 
             'nombre' => 'bail|required|max:50',
             'apellido' => 'required|max:200',
-            'correo' => 'required|email|max:200',
+            'correo' => 'email|max:200',
             'telefono' => 'required|max:15',
 
         ]);
