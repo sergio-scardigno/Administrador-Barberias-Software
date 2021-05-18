@@ -10,7 +10,7 @@ use App\Models\Corte;
 use App\Models\Gasto;
 use App\Models\Tipo;
 use App\Models\User;
-
+use Illuminate\Support\Facades\DB;
 
 
 class ClienteController extends Controller
@@ -88,9 +88,13 @@ class ClienteController extends Controller
      */
     public function edit($id)
     {
+        $cortes = Corte::where('clientes_id','like','%'.$id.'%')->get();
+
         $cliente = Cliente::find($id);
 
-        return view ('/cliente.edit')->with('cliente', $cliente);
+//        dd($cortes);
+
+        return view ('/cliente.edit')->with('cliente', $cliente)->with('cortes', $cortes);
     }
 
     /**
