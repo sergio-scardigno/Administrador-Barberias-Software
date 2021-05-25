@@ -5,6 +5,8 @@ use App\Http\Controllers\CorteController;
 use App\Http\Controllers\BarberController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ChartController;
+use App\Http\Controllers\SummariesController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +43,8 @@ Route::get('cliente.store',[ClienteController::class,'store'])->name('cliente.st
 Route::get('cliente/{id}',[ClienteController::class,'edit'])->name('cliente.edit');
 Route::patch('/cliente/{id}', [ClienteController::class,'update'])->name('cliente.update');
 Route::get('cliente/{id}/destroy',[ClienteController::class,'destroy'])->name('cliente.destroy');
+
+Route::get('/resumen',[SummariesController::class,'index'])->middleware(['auth'])->name('resumen');
 
 Route::get('/chart',[ChartController::class,'index']);
 //Route::resource('/dashboard', CorteController::class);
