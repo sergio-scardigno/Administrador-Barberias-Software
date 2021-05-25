@@ -42,7 +42,7 @@ class CorteController extends Controller
 
 //        dd($clientes);
 
-        $cliente_totales = Cliente::all();
+        $cliente_totales = Cliente::orderBy('nombre')->get();
         $barbers = Barber::all();
         $cortes = Corte::all();
         $tipos = Tipo::all();
