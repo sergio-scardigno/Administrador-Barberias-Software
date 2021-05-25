@@ -78,7 +78,7 @@
                         {{--                        <th class="border-2 text-left pr-12 bg-indigo-200">id</th>--}}
                         <th class="border-2 text-left pr-12 bg-indigo-200">Barbero</th>
                         <th class="border-2 text-left pr-12 bg-indigo-200">Cliente</th>
-                        <th class="border-2 text-left pr-12 bg-indigo-200">Descripción</th>
+{{--                        <th class="border-2 text-left bg-indigo-200">Descripción</th>--}}
                         <th class="border-2 text-left pr-12 bg-indigo-200">Monto</th>
                         <th class="border-2 text-left pr-12 bg-indigo-200">Fecha</th>
                         <th class="border-2 text-left pr-12 bg-indigo-200">Editar</th>
@@ -93,7 +93,7 @@
                             <td class="border-2 text-left pr-12 bg-indigo-100">{{ $cliente->nombre_barbers }}</td>
                             <td class="border-2 text-left pr-12 bg-indigo-100">{{ $cliente->cliente_nombre }}
                                 , {{ $cliente->apellido }}</td>
-                            <td class="border-2 text-left pr-12 bg-indigo-100">{{ $cliente->tipo_nombre }}</td>
+{{--                            <td class="border-2 text-left bg-indigo-100">{{ $cliente->tipo_nombre }}</td>--}}
                             <td class="border-2 text-left pr-12 bg-indigo-100">{{ $cliente->monto }}</td>
                             <td class="border-2 text-left pr-6 bg-indigo-100">{{ $cliente->fecha }}</td>
                             <td>
@@ -124,7 +124,8 @@
             <!-- Chart's container -->
             <div id="chart" style="height: 300px;"></div>
 
-            <div class="m-10">
+            <div class="ml-2">
+                <h1 class="text-lg font-extrabold">Listado de Historial de Clientes</h1>
                 <div class="grid grid-flow-col auto-cols-max">
                     <table class="table-auto">
                         <thead>
