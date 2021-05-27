@@ -1,4 +1,5 @@
 <x-app-layout>
+
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             Panel de Control
@@ -27,13 +28,26 @@
 
 
                     <label for="cliente_id" class="block text-sm font-medium text-gray-700">Cliente</label>
-                    <select id="cliente_id" name="cliente_id" autocomplete="cliente"
-                            class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                        @foreach( $cliente_totales as $cliente_totale )
-                            <option value="{{ $cliente_totale->id }}">{{ $cliente_totale->nombre }}
-                                , {{ $cliente_totale->apellido }}</option>
-                        @endforeach
-                    </select>
+
+{{--                    Espacio de Trabajo para el buscador de clientes--}}
+
+
+{{--                    <select id="cliente_id" name="cliente_id" autocomplete="cliente"--}}
+{{--                            class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">--}}
+{{--                        @foreach( $cliente_totales as $cliente_totale )--}}
+{{--                            <option value="{{ $cliente_totale->id }}">{{ $cliente_totale->nombre }}--}}
+{{--                                , {{ $cliente_totale->apellido }}</option>--}}
+{{--                        @endforeach--}}
+{{--                    </select>--}}
+
+
+                    <select id="cliente_id" name="cliente_id" class="itemName  mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"></select>
+
+
+
+
+
+{{--                    Fin de Espacio de Trabajo--}}
 
                     <label for="tipos_id" class="block text-sm font-medium text-gray-700">Tipo de corte: </label>
                     <select id="tipos_id" name="tipos_id" autocomplete="tipos_id"
@@ -70,6 +84,7 @@
 
 
         <div class="m-10">
+
 
             <div class="grid grid-flow-col auto-cols-max">
                 <table class="table-auto">
@@ -155,6 +170,7 @@
 
 
 
+
             <!-- Charting library -->
             <script src="https://unpkg.com/echarts/dist/echarts.min.js"></script>
             <!-- Chartisan -->
@@ -167,6 +183,36 @@
 
                 });
             </script>
+
+            <script type="text/javascript">
+                $('.itemName').select2({
+                    language: "es",
+                    placeholder: 'Buscar cliente',
+                    ajax: {
+                        url: '/autocomplete',
+                        dataType: 'json',
+                        delay: 250,
+                        processResults: function (data) {
+                            return {
+                                results:  $.map(data, function (item) {
+                                    return {
+                                        text: item.nombre + ', ' + item.apellido,
+                                        id: item.id
+                                    }
+                                })
+                            };
+                        },
+                        cache: true
+                    }
+                });
+
+                $('.itemName').on('select2:select', function (e) {
+                    var data = $(e.currentTarget).val();
+                    return data;
+                });
+
+            </script>
+
 
 
 </x-app-layout>

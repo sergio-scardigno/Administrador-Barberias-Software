@@ -6,6 +6,8 @@ use App\Http\Controllers\BarberController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ChartController;
 use App\Http\Controllers\SummariesController;
+use App\Http\Controllers\Select2SearchController;
+
 
 
 /*
@@ -47,6 +49,11 @@ Route::get('cliente/{id}/destroy',[ClienteController::class,'destroy'])->name('c
 Route::get('/resumen',[SummariesController::class,'index'])->middleware(['auth'])->name('resumen');
 
 Route::get('/chart',[ChartController::class,'index']);
-//Route::resource('/dashboard', CorteController::class);
+
+
+Route::get('/autocomplete', [Select2SearchController::class, 'dataAjax']);
+
+
+
 
 require __DIR__.'/auth.php';
