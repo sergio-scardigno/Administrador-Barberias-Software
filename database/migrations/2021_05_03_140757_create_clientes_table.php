@@ -17,8 +17,8 @@ class CreateClientesTable extends Migration
             $table->id()->autoIncrement();
             $table->string('nombre');
             $table->string('apellido');
-            $table->string('correo');
-            $table->string('telefono');
+            $table->string('correo')->nullable();
+            $table->string('telefono')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

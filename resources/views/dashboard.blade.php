@@ -153,7 +153,7 @@
                         <tbody>
                         @foreach ($cliente_totales as $cliente_totale)
                             <tr>
-                                <td class="border-2 text-left pr-12 bg-indigo-100">{{ $cliente_totale->nombre }}, {{ $cliente_totale->apellido }}</td>
+                                <td class="border-2 text-left pr-12 bg-indigo-100">{{ ucfirst($cliente_totale->nombre) }}, {{ ucfirst($cliente_totale->apellido) }}</td>
 
                                 <td>
                                     <a href="{{ route('cliente.edit', $cliente_totale->id) }}"

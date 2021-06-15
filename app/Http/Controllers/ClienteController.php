@@ -50,8 +50,8 @@ class ClienteController extends Controller
 
             'nombre' => 'bail|required|max:50',
             'apellido' => 'required|max:200',
-            'correo' => 'email|max:200',
-            'telefono' => 'required|max:15',
+            'correo' => 'email|max:200|nullable|present',
+            'telefono' => 'max:15|nullable|present',
 
         ]);
 
