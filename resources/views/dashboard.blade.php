@@ -142,29 +142,32 @@
             <div class="ml-2">
                 <h1 class="text-lg font-extrabold">Listado de Historial de Clientes</h1>
                 <div class="grid grid-flow-col auto-cols-max">
-                    <table class="table-auto">
-                        <thead>
-                        <tr>
-                            <th class="border-2 text-left pr-12 bg-indigo-200">Cliente</th>
-                            <th class="border-2 text-left pr-12 bg-indigo-200">Historial</th>
-                        </tr>
-                        </thead>
+{{--                    <table class="table-auto">--}}
+{{--                        <thead>--}}
+{{--                        <tr>--}}
+{{--                            <th class="border-2 text-left pr-12 bg-indigo-200">Cliente</th>--}}
+{{--                            <th class="border-2 text-left pr-12 bg-indigo-200">Historial</th>--}}
+{{--                        </tr>--}}
+{{--                        </thead>--}}
 
-                        <tbody>
-                        @foreach ($cliente_totales as $cliente_totale)
-                            <tr>
-                                <td class="border-2 text-left pr-12 bg-indigo-100">{{ ucfirst($cliente_totale->nombre) }}, {{ ucfirst($cliente_totale->apellido) }}</td>
+{{--                        <tbody>--}}
+{{--                        @foreach ($cliente_totales as $cliente_totale)--}}
+{{--                            <tr>--}}
+{{--                                <td class="border-2 text-left pr-12 bg-indigo-100">{{ ucfirst($cliente_totale->nombre) }}, {{ ucfirst($cliente_totale->apellido) }}</td>--}}
 
-                                <td>
-                                    <a href="{{ route('cliente.edit', $cliente_totale->id) }}"
-                                       class="bg-indigo-300 hover:bg-blue-700 text-white font-bold py-0 px-4 rounded"
-                                       role="button">Historial</a>
-                                </td>
+{{--                                <td>--}}
+{{--                                    <a href="{{ route('cliente.edit', $cliente_totale->id) }}"--}}
+{{--                                       class="bg-indigo-300 hover:bg-blue-700 text-white font-bold py-0 px-4 rounded"--}}
+{{--                                       role="button">Historial</a>--}}
+{{--                                </td>--}}
 
-                            </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
+{{--                            </tr>--}}
+{{--                        @endforeach--}}
+{{--                        </tbody>--}}
+{{--                    </table>--}}
+                    <select id="cliente_id" name="cliente_id" style="width: 300px;" class="itemName-h mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"></select>
+
+
                 </div>
             </div>
 
@@ -209,6 +212,36 @@
                 $('.itemName').on('select2:select', function (e) {
                     var data = $(e.currentTarget).val();
                     return data;
+                });
+
+            </script>
+
+            <script type="text/javascript">
+                $('.itemName-h').select2({
+                    language: "es",
+                    placeholder: 'Buscar cliente',
+                    ajax: {
+                        url: '/autocomplete',
+                        dataType: 'json',
+                        delay: 250,
+                        processResults: function (data) {
+                            return {
+                                results:  $.map(data, function (item) {
+                                    return {
+                                        text: item.nombre + ', ' + item.apellido,
+                                        id: item.id
+                                    }
+                                })
+                            };
+                        },
+                        cache: true
+                    }
+                });
+
+                $('.itemName-h').on('select2:select', function (e) {
+                    var data = $(e.currentTarget).val();
+
+                    location.href = '/cliente/'+ data;
                 });
 
             </script>
