@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CorteController;
 use App\Http\Controllers\BarberController;
 use App\Http\Controllers\ClienteController;
-use App\Http\Controllers\ChartController;
+//use App\Http\Controllers\ChartController;
 use App\Http\Controllers\SummariesController;
 use App\Http\Controllers\Select2SearchController;
 
@@ -25,7 +25,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/register', function () {
+    return view('register');
+});
+
+
 Route::get('/dashboard', [CorteController::class, 'index'])->middleware(['auth'])->name('dashboard');
+
 Route::get('corte.store',[CorteController::class,'store'])->name('corte.store');
 Route::get('corte/{id}',[CorteController::class,'edit'])->name('corte.edit');
 Route::patch('/corte/{id}', [CorteController::class,'update'])->name('corte.update');
@@ -48,7 +54,7 @@ Route::get('cliente/{id}/destroy',[ClienteController::class,'destroy'])->name('c
 
 Route::get('/resumen',[SummariesController::class,'index'])->middleware(['auth'])->name('resumen');
 
-Route::get('/chart',[ChartController::class,'index']);
+//Route::get('/chart',[ChartController::class,'index']);
 
 
 Route::get('/autocomplete', [Select2SearchController::class, 'dataAjax']);

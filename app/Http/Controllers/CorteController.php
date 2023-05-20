@@ -37,6 +37,7 @@ class CorteController extends Controller
             ->select('cortes.*', 'barbers.nombre as nombre_barbers', 'tipos.nombres as tipo_nombre', 'clientes.nombre as cliente_nombre', 'apellido')
             ->orderBy('fecha', 'desc')
             ->paginate(6);            ;
+
 //        Termina acá
 
 
@@ -46,11 +47,14 @@ class CorteController extends Controller
         $barbers = Barber::all();
         $cortes = Corte::all();
         $tipos = Tipo::all();
-//        $gastos = Gasto::all();
 
+        $gastos = Gasto::all();
 
+//        dd($tipos);
 
         return view('/dashboard')->with('barbers', $barbers)->with('clientes', $clientes)->with('tipos', $tipos)->with('cortes', $cortes)->with('cliente_totales', $cliente_totales);
+
+//        return view('/dashboard');
 
     }
 

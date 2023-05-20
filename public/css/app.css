@@ -67,6 +67,10 @@ body {
 		'Segoe UI Emoji';
 }
 
+
+.custom-table {
+    width: 300px; /* Ajusta el valor del ancho según tus necesidades */
+}
 /*
 Grouping content
 ================
