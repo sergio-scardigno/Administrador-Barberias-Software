@@ -11,6 +11,15 @@ Document
 Use a better box model (opinionated).
 */
 
+/* estilos.css */
+#gifContainer {
+  position: fixed;
+  bottom: 20px; /* Espaciado desde la parte inferior */
+  right: 20px; /* Espaciado desde la derecha */
+  width: 50px; /* Ajusta esto según el tamaño deseado para tu GIF */
+  height: auto;
+}
+
 *,
 ::before,
 ::after {
