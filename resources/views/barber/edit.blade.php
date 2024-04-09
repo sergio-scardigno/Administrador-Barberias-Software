@@ -5,7 +5,8 @@
         </h2>
     </x-slot>
 
-    <div class="grid grid-cols-3 gap-4">
+    <div class="container">
+        <div class="grid grid-cols-3 gap-4">
 
         <div class="m-10">
             @include('components.mensaje')
@@ -35,5 +36,8 @@
 
 
     </div>
+    </div>
+
+
 
 </x-app-layout>

@@ -6,13 +6,15 @@
         </h2>
     </x-slot>
 
+    <div class="container">
+        
     <div class="grid grid-cols-3 gap-4">
 
         <div class="m-10">
             @include('components.mensaje')
             <form action="{{ route('corte.store') }}" method="POST">
                 @method('get')
-                {{--                @csrf--}}
+                @csrf
                 <div class="shadow ">
 
                     <label class="block text-sm font-medium text-gray-700">Nuevo corte:</label>
@@ -29,7 +31,7 @@
 
                     <label for="cliente_id" class="block text-sm font-medium text-gray-700">Cliente</label>
 
-{{--                    Espacio de Trabajo para el buscador de clientes--}}
+                    {{--Espacio de Trabajo para el buscador de clientes--}}
 
 
 {{--                    <select id="cliente_id" name="cliente_id" autocomplete="cliente"--}}
@@ -47,7 +49,7 @@
 
 
 
-{{--                    Fin de Espacio de Trabajo--}}
+                    {{--Fin de Espacio de Trabajo--}}
 
                     <label for="tipos_id" class="block text-sm font-medium text-gray-700">Tipo de corte: </label>
                     <select id="tipos_id" name="tipos_id" autocomplete="tipos_id"
@@ -57,10 +59,18 @@
                         @endforeach
                     </select>
 
+                    <label for="medio_de_pago" class="block text-sm font-medium text-gray-700">Medio de pago: </label>
+                    <select id="medio_de_pago" name="medio_de_pago" autocomplete="medio_de_pago"
+                            class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        @foreach( $pagos as $pago )
+                            <option value="{{ $pago->id }}">{{ $pago->pagos }}</option>
+                        @endforeach
+                    </select>
 
-                    <label for="fecha" class="block text-sm font-medium text-gray-700">Fecha</label>
+
+                    <!-- <label for="fecha" class="block text-sm font-medium text-gray-700">Fecha</label>
                     <input type="date" name="fecha" id="fecha"
-                           class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                           class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"> -->
 
                     <label for="monto" class="block text-sm font-medium text-gray-700">Monto</label>
                     <input type="number" name="monto" id="monto"
@@ -90,29 +100,31 @@
                 <table class="table-auto custom-table">
                     <thead>
                     <tr>
-                        {{--                        <th class="border-2 text-left pr-12 bg-indigo-200">id</th>--}}
+                        <!-- <th class="border-2 text-left pr-12 bg-indigo-200">id</th> -->
                         <th class="border-2 text-left pr-12 bg-indigo-200">Barbero</th>
                         <th class="border-2 text-left pr-12 bg-indigo-200">Cliente</th>
-{{--                        <th class="border-2 text-left bg-indigo-200">Descripción</th>--}}
                         <th class="border-2 text-left pr-12 bg-indigo-200">Monto</th>
                         <th class="border-2 text-left pr-12 bg-indigo-200">Fecha</th>
+                        <th class="border-2 text-left bg-indigo-200">Descripción</th>
+
                         <th class="border-2 text-left pr-12 bg-indigo-200">Editar</th>
                         <th class="border-2 text-left pr-12 bg-indigo-200">Borrar</th>
-                        <th class="border-2 text-left pr-12 bg-indigo-200">Acciones</th>
-                        <th class="border-2 text-left pr-12 bg-indigo-200">Acciones</th>
 
                     </tr>
                     </thead>
                     <tbody>
                     @foreach ($clientes as $cliente)
                         <tr>
-                                                        <td class="border-2 text-left pr-12 bg-indigo-100">{{ $cliente->id }}</td>
+                            <!-- <td class="border-2 text-left pr-12 bg-indigo-100">{{ $cliente->id }}</td> -->
                             <td class="border-2 text-left pr-12 bg-indigo-100">{{ $cliente->nombre_barbers }}</td>
                             <td class="border-2 text-left pr-12 bg-indigo-100">{{ $cliente->cliente_nombre }}
                                 , {{ $cliente->apellido }}</td>
-                            <td class="border-2 text-left bg-indigo-100">{{ $cliente->tipo_nombre }}</td>
+                            
                             <td class="border-2 text-left pr-12 bg-indigo-100">{{ $cliente->monto }}</td>
                             <td class="border-2 text-left pr-6 bg-indigo-100">{{ $cliente->fecha }}</td>
+                            <td class="border-2 text-left bg-indigo-100">{{ $cliente->tipo_nombre }}</td>
+                            
+                            
                             <td>
                                 <a href="{{ route('corte.edit', $cliente->id) }}"
                                    class="bg-indigo-300 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -173,67 +185,71 @@
 
 
 
-            <script type="text/javascript">
-                $('.itemName').select2({
-                    language: "es",
-                    placeholder: 'Buscar cliente',
-                    ajax: {
-                        url: '/autocomplete',
-                        dataType: 'json',
-                        delay: 250,
-                        processResults: function (data) {
-                            return {
-                                results:  $.map(data, function (item) {
-                                    return {
-                                        text: item.nombre + ', ' + item.apellido,
-                                        id: item.id
-                                    }
-                                })
-                            };
-                        },
-                        cache: true
-                    }
-                });
-
-                $('.itemName').on('select2:select', function (e) {
-                    var data = $(e.currentTarget).val();
-                    return data;
-                });
-
-            </script>
-
-            <script type="text/javascript">
-                $('.itemName-h').select2({
-                    language: "es",
-                    placeholder: 'Buscar cliente',
-                    ajax: {
-                        url: '/autocomplete',
-                        dataType: 'json',
-                        delay: 250,
-                        processResults: function (data) {
-                            return {
-                                results:  $.map(data, function (item) {
-                                    return {
-                                        text: item.nombre + ', ' + item.apellido,
-                                        id: item.id
-                                    }
-                                })
-                            };
-                        },
-                        cache: true
-                    }
-                });
-
-                $('.itemName-h').on('select2:select', function (e) {
-                    var data = $(e.currentTarget).val();
-
-                    location.href = '/cliente/'+ data;
-                });
-
-            </script>
 
 
 
+
+
+    </div>
 </x-app-layout>
+
+<script type="text/javascript">
+    $('.itemName').select2({
+        language: "es",
+        placeholder: 'Buscar cliente',
+        ajax: {
+            url: '/autocomplete',
+            dataType: 'json',
+            delay: 250,
+            processResults: function (data) {
+                return {
+                    results:  $.map(data, function (item) {
+                        return {
+                            text: item.nombre + ', ' + item.apellido,
+                            id: item.id
+                        }
+                    })
+                };
+            },
+            cache: true
+        }
+    });
+
+    $('.itemName').on('select2:select', function (e) {
+        var data = $(e.currentTarget).val();
+        return data;
+    });
+
+</script>
+
+<script type="text/javascript">
+    $('.itemName-h').select2({
+        language: "es",
+        placeholder: 'Buscar cliente',
+        ajax: {
+            url: '/autocomplete',
+            dataType: 'json',
+            delay: 250,
+            processResults: function (data) {
+                return {
+                    results:  $.map(data, function (item) {
+                        return {
+                            text: item.nombre + ', ' + item.apellido,
+                            id: item.id
+                        }
+                    })
+                };
+            },
+            cache: true
+        }
+    });
+
+    $('.itemName-h').on('select2:select', function (e) {
+        var data = $(e.currentTarget).val();
+
+        location.href = '/cliente/'+ data;
+    });
+
+</script>
 
 

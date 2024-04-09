@@ -5,7 +5,8 @@
         </h2>
     </x-slot>
 
-    <div class="grid grid-cols-12 gap-4">
+    <div class="container">
+        <div class="grid grid-cols-12 gap-4">
 
         <div class="m-10">
 
@@ -41,6 +42,9 @@
 
         </div>
     </div>
+    </div>
+
+
 
 
 </x-app-layout>

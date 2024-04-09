@@ -11,6 +11,10 @@ use App\Models\Corte;
 use App\Models\Gasto;
 use App\Models\Tipo;
 use App\Models\User;
+use App\Models\MediosDePagos;
+
+use Carbon\Carbon;
+
 
 use Illuminate\Support\Facades\Auth;
 
@@ -47,12 +51,16 @@ class CorteController extends Controller
         $barbers = Barber::all();
         $cortes = Corte::all();
         $tipos = Tipo::all();
+        $pagos = MediosDePagos::all();
+        
+        // dd($pagos);
+
 
         $gastos = Gasto::all();
 
 //        dd($tipos);
 
-        return view('/dashboard')->with('barbers', $barbers)->with('clientes', $clientes)->with('tipos', $tipos)->with('cortes', $cortes)->with('cliente_totales', $cliente_totales);
+        return view('/dashboard')->with('barbers', $barbers)->with('clientes', $clientes)->with('tipos', $tipos)->with('cortes', $cortes)->with('cliente_totales', $cliente_totales)->with('pagos', $pagos);
 
 //        return view('/dashboard');
 
@@ -80,22 +88,26 @@ class CorteController extends Controller
 
             'cliente_id' => 'bail|required|max:50',
             'tipos_id' => 'required|max:200',
-            'fecha' => 'required|date',
             'descripcion' => 'required|max:200',
             'barbers_id' => 'required|',
             'monto' => 'required|max:200',
+            'medio_de_pago' => 'required|max:10',
 
         ]);
 //
         $corte = new Corte ([
             'clientes_id' => $request->cliente_id,
             'tipos_id' => $request->tipos_id,
-            'fecha' => $request->fecha,
+            'fecha' => Carbon::now()->toDateTimeString(), // Formato 'YYYY-MM-DD HH:MM:SS',
             'descripcion' => $request->descripcion,
             'barbers_id' => $request->barbers_id,
             'monto' => $request->monto,
+            'medio_de_pago' => $request->medio_de_pago,
+            
         ]);
-//        dd($request);
+        
+        
+        // dd($corte);
 
         $corte->save();
 
