@@ -20,6 +20,7 @@ class Corte extends Model
         'fecha',
         'descripcion',
         'monto',
+        'medio_de_pago',
     ];
 
 

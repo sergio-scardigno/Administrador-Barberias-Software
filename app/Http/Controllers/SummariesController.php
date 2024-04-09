@@ -24,61 +24,31 @@ class SummariesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        // Obteniendo el año y el mes desde el request, usando el año y mes actual como predeterminado
+        $anioSeleccionado = $request->input('anio', Carbon::now()->year);
+        $mesSeleccionado = $request->input('mes', Carbon::now()->month);
 
-        $total_corte_day = Corte::whereDate('fecha', '=', Carbon::now()->format('Y-m-d'))
+        // Creando un objeto Carbon con el año y el mes seleccionados
+        $fechaSeleccionada = Carbon::createFromDate($anioSeleccionado, $mesSeleccionado, 1);
+
+        // Utiliza $fechaSeleccionada para filtrar tus consultas por el mes y el año seleccionados
+        $total_corte_month = Corte::whereYear('fecha', '=', $fechaSeleccionada->year)
+            ->whereMonth('fecha', '=', $fechaSeleccionada->month)
             ->whereIn('barbers_id', [1])
             ->join('barbers', 'barbers_id', '=', 'barbers.id')
             ->get();
 
-        $total_corte_day_suma = Corte::whereDate('fecha', '=', Carbon::now()->format('Y-m-d'))
-            ->whereIn('barbers_id', [1])
-            ->sum('monto');
-
-        $barberia_monto = $total_corte_day_suma/2;
-
-        $barbero_monto = $total_corte_day_suma/2;
-
-//        Barbero 2
-
-        $total_corte_day_two = Corte::whereDate('fecha', '=', Carbon::now()->format('Y-m-d'))
-            ->whereIn('barbers_id', [2])
-            ->join('barbers', 'barbers_id', '=', 'barbers.id')
+        $gastosMes = Gasto::whereYear('created_at', '=', $fechaSeleccionada->year)
+            ->whereMonth('created_at', '=', $fechaSeleccionada->month)
             ->get();
 
-        $total_corte_day_suma_two = Corte::whereDate('fecha', '=', Carbon::now()->format('Y-m-d'))
-            ->whereIn('barbers_id', [2])
-            ->sum('monto');
-
-        $barberia_monto_two = $total_corte_day_suma_two/2;
-
-        $barbero_monto_two = $total_corte_day_suma_two/2;
-
-        $total_barberia = $barberia_monto_two + $barberia_monto;
-
-
-//        dd($barbero_monto_two);
-
-        return view ('/summaries.index')
-            ->with('cortes', $total_corte_day)
-            ->with('suma', $total_corte_day_suma)
-            ->with('barberia', $barberia_monto)
-            ->with('barbero', $barbero_monto)
-
-            ->with('cortes_twos', $total_corte_day_two)
-            ->with('sumas_two', $total_corte_day_suma_two)
-            ->with('barberia_two', $barberia_monto_two)
-            ->with('barbero_two', $barbero_monto_two)
-
-            ->with('total_barberia', $total_barberia)
-
-
-
-
-
-            ;
+        // Devuelve la vista con los datos filtrados por el año y el mes seleccionados
+        return view('/summaries.index', compact('total_corte_month', 'gastosMes'));
+ 
     }
+    
 
     /**
      * Show the form for creating a new resource.

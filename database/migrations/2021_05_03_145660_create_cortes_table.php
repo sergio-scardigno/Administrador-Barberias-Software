@@ -3,6 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
+
 
 class CreateCortesTable extends Migration
 {
@@ -18,6 +20,7 @@ class CreateCortesTable extends Migration
             $table->foreignId('clientes_id')->constrained();
             $table->foreignId('tipos_id')->constrained();
             $table->date('fecha');
+            $table->integer('medio_de_pago');
             $table->text('descripcion');
             $table->foreignId('barbers_id')->constrained();
             $table->integer('monto');

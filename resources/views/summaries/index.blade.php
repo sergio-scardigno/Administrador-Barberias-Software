@@ -5,153 +5,131 @@
         </h2>
     </x-slot>
 
-    <div class="shadow-lg">
-        <div class="container m-10">
-            <h1 class="text-left">Muestra el balance del dia</h1>
+    <div class="container mt-3">
+        <h1>Cortes del Mes</h1>
+
+        <form action="{{ route('resumen') }}" method="GET">
+            <div class="form-group">
+                <label for="anioSeleccionado">Seleccione un Año:</label>
+                <select class="form-control" id="anioSeleccionado" name="anio">
+                    @php
+                    $anioActual = now()->year;
+                    $anioInicio = $anioActual - 1;
+                    $anioSeleccionado = request('anio', $anioActual);
+        
+                    for ($anio = $anioInicio; $anio <= $anioActual; $anio++) {
+                        $selected = $anioSeleccionado == $anio ? 'selected' : '';
+                        echo "<option value='{$anio}' {$selected}>{$anio}</option>";
+                    }
+                    @endphp
+                </select>
+            </div>
+        
+            <div class="form-group">
+                <label for="mesSeleccionado">Seleccione un Mes:</label>
+                <select class="form-control" id="mesSeleccionado" name="mes">
+                    @php
+                    $meses = [
+                        1 => 'Enero', 2 => 'Febrero', 3 => 'Marzo', 4 => 'Abril',
+                        5 => 'Mayo', 6 => 'Junio', 7 => 'Julio', 8 => 'Agosto',
+                        9 => 'Septiembre', 10 => 'Octubre', 11 => 'Noviembre', 12 => 'Diciembre'
+                    ];
+                    $mesSeleccionado = request('mes', now()->month);
+                    
+                    foreach (range(1, 12) as $mes) {
+                        $nombreMes = $meses[$mes];
+                        $selected = $mesSeleccionado == $mes ? 'selected' : '';
+                        echo "<option value='{$mes}' {$selected}>{$nombreMes}</option>";
+                    }
+                    @endphp
+                </select>
+            </div>
+        
+            <button type="submit" class="btn btn-primary">Mostrar</button>
+        </form>
+        
+        
+        
+
+        @if($total_corte_month->isEmpty())
+            <p>No hay cortes, ni gastos registrados este mes.</p>
+        @else
+
+        @php
+            $totalMonto = 0;
+        @endphp
+
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <h2>Ingresos del mes</h2>
+                    <table class="table table-light">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Monto</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php $totalIngresos = 0; @endphp
+                            @foreach($total_corte_month as $corte)
+                                @php
+                                    $totalIngresos += $corte->monto;
+                                @endphp
+                                <tr>
+                                    <td>{{ $corte->fecha }}</td>
+                                    <td>{{ $corte->monto }}</td>
+                                </tr>
+                            @endforeach
+                            <tr>
+                                <td><strong>Total Ingresos</strong></td>
+                                <td><strong>{{ $totalIngresos }}</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col">
+                    <h2>Gastos del mes</h2>
+                    <table class="table table-light">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Monto</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php $totalGastos = 0; @endphp
+                            @foreach($gastosMes as $gasto)
+                                @php
+                                    $totalGastos += $gasto->monto;
+                                @endphp
+                                <tr>
+                                    <td>{{ $gasto->created_at->format('Y-m-d') }}</td>
+                                    <td>{{ $gasto->monto }}</td>
+                                </tr>
+                            @endforeach
+                            <tr>
+                                <td><strong>Total Gastos</strong></td>
+                                <td><strong>{{ $totalGastos }}</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Resultado final -->
+            <div class="row">
+                <div class="col">
+                    <h3>Resultado Final</h3>
+                    <p><strong>Total Ingresos:</strong> {{ $totalIngresos }}</p>
+                    <p><strong>Total Gastos:</strong> {{ $totalGastos }}</p>
+                    <p><strong>Balance del Mes:</strong> {{ $totalIngresos - $totalGastos }}</p>
+                </div>
+            </div>
+            
         </div>
+        @endif
     </div>
-
-
-    <div class="m-10">
-        <div class="grid grid-flow-col auto-cols-max">
-            <table class="table-auto">
-                <thead>
-                <tr>
-                    <th class="border-2 text-left pr-12 bg-indigo-200">Barbero</th>
-                    <th class="border-2 text-left pr-12 bg-indigo-200">Montos</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach ($cortes as $corte)
-                    <tr>
-                        <td class="border-2 text-left pr-12 bg-indigo-100">{{ $corte->nombre }}</td>
-                        <td class="border-2 text-left pr-12 bg-indigo-100">{{ $corte->monto }}</td>
-                    </tr>
-                @endforeach
-                <tfoot>
-                <tr>
-                    <th class="border-2 text-left pr-12 bg-indigo-100">Total</th>
-                    <th class="border-2 text-left pr-12 bg-indigo-100">{{ $suma }}</th>
-                </tr>
-
-                <tr>
-                    <th class="border-2 text-left pr-12 bg-indigo-100">Para la Barberia</th>
-                    <th class="border-2 text-left pr-12 bg-indigo-100">{{ $barberia }}</th>
-                </tr>
-
-                <tr>
-                    <th class="border-2 text-left pr-12 bg-indigo-100">Para el Barbero</th>
-                    <th class="border-2 text-left pr-12 bg-indigo-100">{{ $barbero }}</th>
-                </tr>
-                </tfoot>
-                </tbody>
-            </table>
-
-            <div class="grid grid-flow-col auto-cols-max">
-                <table class="table-auto">
-                    <thead>
-                    <tr>
-                        <th class="border-2 text-left pr-12 bg-indigo-200">Barbero</th>
-                        <th class="border-2 text-left pr-12 bg-indigo-200">Montos</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach ($cortes_twos as $cortes_two)
-                        <tr>
-                            <td class="border-2 text-left pr-12 bg-indigo-100">{{ $cortes_two->nombre }}</td>
-                            <td class="border-2 text-left pr-12 bg-indigo-100">{{ $cortes_two->monto }}</td>
-                        </tr>
-                    @endforeach
-                    <tfoot>
-                    <tr>
-                        <th class="border-2 text-left pr-12 bg-indigo-100">Total</th>
-                        <th class="border-2 text-left pr-12 bg-indigo-100">{{ $sumas_two }}</th>
-                    </tr>
-
-                    <tr>
-                        <th class="border-2 text-left pr-12 bg-indigo-100">Para la Barberia</th>
-                        <th class="border-2 text-left pr-12 bg-indigo-100">{{ $barberia_two }}</th>
-                    </tr>
-
-                    <tr>
-                        <th class="border-2 text-left pr-12 bg-indigo-100">Para la Barbero</th>
-                        <th class="border-2 text-left pr-12 bg-indigo-100">{{ $barbero_two }}</th>
-                    </tr>
-                    </tfoot>
-                    </tbody>
-                </table>
-
-
-            </div>
-
-
-        </div>
-
-
-        <div class="space-x-2 bg-blue-50 rounded flex items-start text-blue-600 my-4 max-w-2xl shadow-lg">
-            <div class="w-1 self-stretch bg-blue-800">
-
-            </div>
-            <div class="flex  space-x-2 p-4">
-                <svg xmlns="http://www.w3.org/2000/svg" class="fill-current w-5 pt-1" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-1.5 5h3l-1 10h-1l-1-10zm1.5 14.25c-.69 0-1.25-.56-1.25-1.25s.56-1.25 1.25-1.25 1.25.56 1.25 1.25-.56 1.25-1.25 1.25z"/></svg>
-                <h3 class="text-blue-800 tracking-wider flex-1">
-                    Pago total para la barberia {{ now()->toFormattedDateString() }} <br><a href="#" class="font-semibold underline">({{$total_barberia}} pesos) </a>
-                </h3>
-            </div>
-        </div>
-
-
-    {{--        <table class="table-auto">--}}
-    {{--            <thead>--}}
-    {{--            <tr>--}}
-    {{--                <th class="border-2 text-left pr-12 bg-indigo-200">Para la Barberia</th>--}}
-    {{--            </tr>--}}
-    {{--            <tbody>--}}
-    {{--            <tr>--}}
-    {{--                <th class="border-2 text-left pr-12 bg-indigo-100">{{ $barberia }}</th>--}}
-    {{--            </tr>--}}
-    {{--            </tbody>--}}
-    {{--            </thead>--}}
-    {{--        </table>--}}
-
-    {{--        <table class="table-auto">--}}
-    {{--            <thead>--}}
-    {{--            <tr>--}}
-    {{--                <th class="border-2 text-left pr-12 bg-indigo-200">Para el Barbero</th>--}}
-    {{--            </tr>--}}
-    {{--            <tbody>--}}
-    {{--            <tr>--}}
-    {{--                <th class="border-2 text-left pr-12 bg-indigo-100">{{ $barbero }}</th>--}}
-    {{--            </tr>--}}
-    {{--            </tbody>--}}
-    {{--            </thead>--}}
-    {{--        </table>--}}
-
-    {{--        <table class="table-auto">--}}
-    {{--            <thead>--}}
-    {{--            <tr>--}}
-    {{--                <th class="border-2 text-left pr-12 bg-indigo-200">Para la Barberia</th>--}}
-    {{--            </tr>--}}
-    {{--            <tbody>--}}
-    {{--            <tr>--}}
-    {{--                <th class="border-2 text-left pr-12 bg-indigo-100">{{ $barberia_two }}</th>--}}
-    {{--            </tr>--}}
-    {{--            </tbody>--}}
-    {{--            </thead>--}}
-    {{--        </table>--}}
-
-    {{--        <table class="table-auto">--}}
-    {{--            <thead>--}}
-    {{--            <tr>--}}
-    {{--                <th class="border-2 text-left pr-12 bg-indigo-200">Para el Barbero</th>--}}
-    {{--            </tr>--}}
-    {{--            <tbody>--}}
-    {{--            <tr>--}}
-    {{--                <th class="border-2 text-left pr-12 bg-indigo-100">{{ $barbero_two }}</th>--}}
-    {{--            </tr>--}}
-    {{--            </tbody>--}}
-    {{--            </thead>--}}
-    {{--        </table>--}}
 
 
 </x-app-layout>

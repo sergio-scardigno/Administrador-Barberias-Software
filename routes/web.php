@@ -7,6 +7,8 @@ use App\Http\Controllers\ClienteController;
 //use App\Http\Controllers\ChartController;
 use App\Http\Controllers\SummariesController;
 use App\Http\Controllers\Select2SearchController;
+use App\Http\Controllers\GastoController;
+
 
 
 
@@ -32,6 +34,9 @@ Route::get('/register', function () {
 
 Route::get('/dashboard', [CorteController::class, 'index'])->middleware(['auth'])->name('dashboard');
 
+Route::resource('gastos', GastoController::class);
+
+
 Route::get('corte.store',[CorteController::class,'store'])->name('corte.store');
 Route::get('corte/{id}',[CorteController::class,'edit'])->name('corte.edit');
 Route::patch('/corte/{id}', [CorteController::class,'update'])->name('corte.update');
@@ -53,6 +58,8 @@ Route::patch('/cliente/{id}', [ClienteController::class,'update'])->name('client
 Route::get('cliente/{id}/destroy',[ClienteController::class,'destroy'])->name('cliente.destroy');
 
 Route::get('/resumen',[SummariesController::class,'index'])->middleware(['auth'])->name('resumen');
+
+
 
 //Route::get('/chart',[ChartController::class,'index']);
 
