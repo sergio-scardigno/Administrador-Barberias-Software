@@ -8,6 +8,7 @@ use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\SummariesController;
 use App\Http\Controllers\Select2SearchController;
 use App\Http\Controllers\GastoController;
+use App\Http\Controllers\PhotoController;
 
 
 
@@ -35,6 +36,12 @@ Route::get('/register', function () {
 Route::get('/dashboard', [CorteController::class, 'index'])->middleware(['auth'])->name('dashboard');
 
 Route::resource('gastos', GastoController::class);
+
+Route::get('/photos/create', [PhotoController::class , 'create'])->name('photo.create');
+Route::post('/photos', [PhotoController::class, 'store'])->name('photo.store');
+Route::get('/photos', [PhotoController::class, 'index'])->name('photo.index');
+Route::delete('/photos/{photo}', [PhotoController::class, 'destroy'])->name('photos.destroy');
+
 
 
 Route::get('corte.store',[CorteController::class,'store'])->name('corte.store');
