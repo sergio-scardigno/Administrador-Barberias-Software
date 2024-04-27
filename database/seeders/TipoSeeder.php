@@ -34,5 +34,11 @@ class TipoSeeder extends Seeder
             'nombres' => 'Pelo y Barba',
             'created_at' => Carbon::create('2000', '01', '01')
         ]);
+
+        
+        DB::table('tipos')->insert([
+            'nombres' => 'Promocion',
+            'created_at' => Carbon::create('2000', '01', '01')
+        ]);
     }
 }

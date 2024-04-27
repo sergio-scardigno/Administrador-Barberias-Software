@@ -93,6 +93,19 @@
                 </table>
             </div>
         </div>
+
+        <div>
+            <h2>Promociones Vigentes</h2>
+            @forelse ($promocionesVigentes as $promocion)
+                <div>
+                    <p>Promoción: {{ $promocion->value }}</p> <!-- Asegúrate de que 'descripcion' existe en tu modelo -->
+                    <p>Fecha de Expiración: {{ $promocion->fecha_expiracion->format('d/m/Y') }}</p>
+                </div>
+            @empty
+                <p>No hay promociones vigentes para este cliente.</p>
+            @endforelse
+        </div>
+
     </div>
     </div>
 

@@ -1,0 +1,17 @@
+
+    /* Cambiar el color de fondo del calendario */
+    .fc { background-color: #f7f7f7; }
+
+    /* Ajustar el color de los eventos */
+    .fc-event { background-color: #428bca; border-color: #428bca; }
+
+    /* Personalizar los estilos de los botones de navegación del calendario */
+    .fc-toolbar { background-color: #ffffff; border: none; }
+
+    /* Cambiar el estilo del texto de los eventos */
+    .fc-event-title { color: #ffffff; }
+
+    /* Personalizar el aspecto de los días de la semana y los números de día */
+    .fc-day-header { background-color: #f5f5f5; }
+    .fc-day { background-color: #ffffff; }
+

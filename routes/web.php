@@ -9,6 +9,9 @@ use App\Http\Controllers\SummariesController;
 use App\Http\Controllers\Select2SearchController;
 use App\Http\Controllers\GastoController;
 use App\Http\Controllers\PhotoController;
+use App\Http\Controllers\TurnoController;
+use App\Http\Controllers\PromocionController;
+use App\Http\Controllers\CompraPromocionController;
 
 
 
@@ -41,6 +44,31 @@ Route::get('/photos/create', [PhotoController::class , 'create'])->name('photo.c
 Route::post('/photos', [PhotoController::class, 'store'])->name('photo.store');
 Route::get('/photos', [PhotoController::class, 'index'])->name('photo.index');
 Route::delete('/photos/{photo}', [PhotoController::class, 'destroy'])->name('photos.destroy');
+
+Route::get('/turnos', [TurnoController::class, 'index'])->name('turnos.index');
+Route::get('/turnos/create', [TurnoController::class, 'create'])->name('turnos.create');
+Route::get('/turnos/{turno}/edit', [TurnoController::class, 'edit'])->name('turnos.edit');
+Route::put('/turnos/{turno}', [TurnoController::class, 'update'])->name('turnos.update');
+
+Route::post('/turnos', [TurnoController::class, 'store'])->name('turnos.store');
+Route::delete('/turnos/{turno}', [TurnoController::class, 'destroy'])->name('turnos.destroy');
+Route::get('/turnos/api', [TurnoController::class, 'calendarioTurnos']);
+Route::get('/turnos/api/hoy', [TurnoController::class, 'turnosDeHoy']);
+
+
+// Rutas para promociones
+Route::resource('promociones', PromocionController::class);
+Route::put('promociones/{promocion}', [PromocionController::class, 'update'])->name('promociones.update');
+
+
+// Ruta para comprar una promoción
+Route::post('/cortes-con-promocion', [CorteController::class, 'compraPromocion'])->name('cortes.compraPromocion');
+
+// Ver los usuarios y las promociones en json
+Route::get('/promociones-usuarios/{id}', [CompraPromocionController::class, 'promociones'])->name('promociones-usuarios');
+// actualizar el value de la promocion
+Route::post('/actualizar-promocion/{cliente_id}', [CompraPromocionController::class, 'actualizarPromocion']);
+
 
 
 
