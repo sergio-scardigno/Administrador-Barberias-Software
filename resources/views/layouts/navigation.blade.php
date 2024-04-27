@@ -40,8 +40,6 @@
                         {{ __('Gastos') }}
                     </x-nav-link>
                 </div>
-                
-
 
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('resumen')" :active="request()->routeIs('resumen')">
@@ -52,6 +50,20 @@
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('photo.index')" :active="request()->routeIs('photo.index')">
                         {{ __('Cortes') }}
+                    </x-nav-link>
+                    
+                </div>
+
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('turnos.index')" :active="request()->routeIs('turnos.index')">
+                        {{ __('Turnos') }}
+                    </x-nav-link>
+                    
+                </div>
+
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('promociones.index')" :active="request()->routeIs('promociones.index')">
+                        {{ __('Promociones') }}
                     </x-nav-link>
                     
                 </div>

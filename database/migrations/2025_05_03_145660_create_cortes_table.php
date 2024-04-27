@@ -26,6 +26,8 @@ class CreateCortesTable extends Migration
             $table->integer('monto');
             $table->softDeletes();
             $table->timestamps();
+            $table->foreignId('promocion_id')->nullable()->constrained('promociones')->onDelete('set null');
+
         });
     }
 

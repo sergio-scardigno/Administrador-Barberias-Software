@@ -12,6 +12,8 @@ use App\Models\Gasto;
 use App\Models\Tipo;
 use App\Models\User;
 use App\Models\MediosDePagos;
+use App\Models\CompraPromocion;
+
 
 use Carbon\Carbon;
 
@@ -82,37 +84,37 @@ class CorteController extends Controller
      * //     * @param \Illuminate\Http\Request $request
      * //     * @return \Illuminate\Http\Response
      * //     */
-    public function store(Request $request)
-    {
-        $this->validate($request, [
-
-            'cliente_id' => 'bail|required|max:50',
-            'tipos_id' => 'required|max:200',
-            'descripcion' => 'required|max:200',
-            'barbers_id' => 'required|',
-            'monto' => 'required|max:200',
-            'medio_de_pago' => 'required|max:10',
-
-        ]);
-//
-        $corte = new Corte ([
-            'clientes_id' => $request->cliente_id,
-            'tipos_id' => $request->tipos_id,
-            'fecha' => Carbon::now()->toDateTimeString(), // Formato 'YYYY-MM-DD HH:MM:SS',
-            'descripcion' => $request->descripcion,
-            'barbers_id' => $request->barbers_id,
-            'monto' => $request->monto,
-            'medio_de_pago' => $request->medio_de_pago,
-            
-        ]);
-        
-        
-        // dd($corte);
-
-        $corte->save();
-
-        return redirect('/dashboard')->with('success', 'Task has been added');
-    }
+     public function store(Request $request)
+     {
+         $this->validate($request, [
+             'cliente_id' => 'bail|required|max:50',
+             'tipos_id' => 'required|max:200',
+             'descripcion' => 'required|max:200',
+             'barbers_id' => 'required',
+             'monto' => 'required|max:200',
+             'medio_de_pago' => 'required|max:10',
+             'promocion_id' => 'nullable|exists:promociones,id'  // Asegura que el ID de la promoción exista si se proporciona
+         ]);
+     
+         // Creación del corte con los datos recibidos
+         $corte = new Corte([
+             'clientes_id' => $request->cliente_id,
+             'tipos_id' => $request->tipos_id,
+             'fecha' => Carbon::now()->toDateTimeString(), // Formato 'YYYY-MM-DD HH:MM:SS',
+             'descripcion' => $request->descripcion,
+             'barbers_id' => $request->barbers_id,
+             'monto' => $request->monto,
+             'medio_de_pago' => $request->medio_de_pago,
+             'promocion_id' => $request->promocion_id ?? null  // Asigna el ID de la promoción si está presente
+         ]);
+     
+         // Guarda el corte en la base de datos
+         $corte->save();
+     
+         // Redirecciona al dashboard con un mensaje de éxito
+         return redirect('/dashboard')->with('success', 'Corte registrado con éxito.');
+     }
+     
 
     /**
      * Display the specified resource.
@@ -230,6 +232,76 @@ class CorteController extends Controller
 
         return redirect('/dashboard')->with('success', 'Task has been added');
     }
+
+
+    public function compraPromocion(Request $request)
+    {
+        $this->validate($request, [
+            'cliente_id' => 'required|exists:clientes,id',
+            'promocion_id' => 'nullable',
+            'monto' => 'required|numeric'
+        ]);
+
+        // Obtenemos todos los datos del request
+        $allData = $request->all();
+
+        // Usamos explode para separar el valor de promocion_id en partes
+        if (isset($allData['promocion_id'])) {
+            $parts = explode('-', $allData['promocion_id']);
+            
+            // Asignamos los valores a variables específicas
+            $promocionNumero = $parts[0];
+            $promocionPrecio = $parts[1];
+            $promocionTipo = $parts[2];
+
+            // Ahora puedes utilizar estas variables como necesites
+        }
+
+        // Debugging para ver los datos
+        // dd($promocionNumero, $promocionPrecio, $promocionTipo, $allData);
+
+        // dd($request->all());
+    
+        // Creación del corte con los datos recibidos
+        $comprapromocion = new CompraPromocion([
+            'cliente_id' => $request->cliente_id, // Cambiado de 'clientes_id' a 'cliente_id'
+            'promocion_id' => $promocionTipo,
+            'value' => $promocionNumero,
+            'fecha_compra' => Carbon::now()->toDateTimeString(), // Formato 'YYYY-MM-DD HH:MM:SS',
+            'fecha_expiracion' => Carbon::now()->addDays(30)->toDateTimeString() // Fecha de expiración 30 días después
+
+        ]);
+
+        $corte = new Corte([
+            'clientes_id' => $request->cliente_id,
+            'promocion_id' => $promocionTipo, // Asegúrate de asignar esto solo una vez
+            'monto' => $request->monto,
+            'fecha' => Carbon::now()->toDateTimeString(), // Formato 'YYYY-MM-DD HH:MM:SS'
+            'descripcion' => 'Compra de cupón '.$promocionNumero.' cortes',
+            'barbers_id' => 1, // Asegúrate de que este campo es correcto y necesario
+            'tipos_id' => '4',
+            'medio_de_pago' => '1',
+
+
+            
+        ]);
+        
+        // Quiero grabarlo en cortes
+        // dd($corte);
+    
+
+
+        // Guarda el corte en la base de datos
+        $comprapromocion->save();
+        $corte->save();
+    
+        // Redirecciona al dashboard con un mensaje de éxito
+        return redirect('/dashboard')->with('success', 'Corte registrado con éxito.');
+    }
+
+
+
+
 
 }
 

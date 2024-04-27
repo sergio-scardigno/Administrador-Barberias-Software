@@ -70,8 +70,17 @@
                         </select>
 
 
+                        <!-- // Promocion checkbox -->
+                        <label for="promocion" class="block text-sm font-medium text-gray-700">Promoción:</label>
+                        <div class="mt-1">
+                            <input type="checkbox" id="promocion" name="promocion"
+                                class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                            <span class="ml-2 text-sm text-gray-600">Marcar si el corte es una promoción</span>
+                        </div>
+
+
                         <!-- <label for="fecha" class="block text-sm font-medium text-gray-700">Fecha</label>
-                    <input type="date" name="fecha" id="fecha"
+                        <input type="date" name="fecha" id="fecha"
                            class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"> -->
 
                         <label for="monto" class="block text-sm font-medium text-gray-700">Monto</label>
@@ -96,6 +105,7 @@
 
 
             <div class="col-lg-8">
+                <h1>Movimientos</h1>
                 <div class="grid grid-flow-col auto-cols-max" width="500">
                     <table class="table-auto custom-table">
                         <thead>
@@ -181,8 +191,10 @@
                         <select id="cliente_id" name="cliente_id" style="width: 300px;"
                             class="itemName-h mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"></select>
 
-
                     </div>
+                    <div id="turnosHoy">
+                        <h3>Turnos de hoy</h3>
+                        <ul id="listaTurnos"></ul>
                 </div>
             </div>
         </div>
@@ -195,10 +207,125 @@
             </div>
         </div>
 
+</div>
+
 
 </x-app-layout>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
+
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: 'http://barberia.test/turnos/api/hoy',
+        method: 'GET',
+        dataType: 'json',
+        success: function(turnos) {
+            if (turnos.length > 0) {
+                $('#listaTurnos').empty();
+                turnos.forEach(function(turno) {
+                    // Mostrar los horarios y los nombres de los turnos en la lista
+                    $('#listaTurnos').append('<li>' + turno.start + ' - ' + turno.end + ' : ' + turno.title + '</li>');
+                });
+            } else {
+                $('#listaTurnos').html('<li>No hay turnos para hoy.</li>');
+            }
+        },
+        error: function() {
+            $('#listaTurnos').html('<li>Hubo un error al cargar los turnos.</li>');
+        }
+    });
+});
+
+
+
+
+
+</script>
+
+
+<script>
+$(document).ready(function() {
+    $('#cliente_id').change(function() {
+        var clienteId = $(this).val();
+        if (clienteId) {
+            $.ajax({
+                url: '/promociones-usuarios/' + clienteId,
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    if (data.tiene_promocion && data.promociones.some(promo => promo.value > 0)) {
+                        var totalValue = data.promociones.reduce((sum, promo) => sum + promo.value, 0); // Calcula el total de value
+                        $('#promocion').prop('checked', true).prop('disabled', false);
+                        $('#monto, #descripcion, #medio_de_pago').hide();
+                        tienePromocion = true;
+                        Swal.fire({
+                            title: 'Promoción Vigente',
+                            text: 'El cliente tiene ' + data.promociones.length + ' promoción(es) vigente(s) con un total de ' + totalValue + ' crédito(s) restante(s).',
+                            icon: 'info',
+                            confirmButtonText: 'Entendido'
+                        });
+                    } else {
+                        $('#promocion').prop('checked', false).prop('disabled', true);
+                        $('#monto, #descripcion, #medio_de_pago').show();
+                        tienePromocion = false;
+                    }
+                },
+                error: function() {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Error al obtener la información de la promoción.',
+                        icon: 'error',
+                        confirmButtonText: 'Cerrar'
+                    });
+                }
+            });
+        } else {
+            $('#promocion').prop('checked', false).prop('disabled', true);
+            $('#monto, #descripcion, #medio_de_pago').hide();
+            tienePromocion = false;
+        }
+    });
+
+    $('form').submit(function(e) {
+        if (tienePromocion) {
+            e.preventDefault();
+            var clienteId = $('#cliente_id').val();
+
+            $.ajax({
+                url: '/actualizar-promocion/' + clienteId,
+                type: 'POST',
+                data: {
+                    _token: $('input[name="_token"]').val(),
+                    cliente_id: clienteId
+                },
+                success: function(response) {
+                    Swal.fire({
+                        title: '¡Éxito!',
+                        text: 'Se descontó una promoción correctamente en el cliente.',
+                        icon: 'success',
+                        confirmButtonText: 'Cerrar'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.reload(); // Recarga la página
+                        }
+                    });
+                },
+                error: function(xhr) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Error al actualizar la promoción: ' + xhr.statusText,
+                        icon: 'error',
+                        confirmButtonText: 'Cerrar'
+                    });
+                }
+            });
+        }
+    });
+});
+</script>
 
 
 <script type="text/javascript">

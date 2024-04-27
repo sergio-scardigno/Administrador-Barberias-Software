@@ -9,7 +9,7 @@
         <h1>Cortes del Mes</h1>
 
         <form action="{{ route('resumen') }}" method="GET">
-            <div class="form-group">
+            <div class="form-group mt-3">
                 <label for="anioSeleccionado">Seleccione un Año:</label>
                 <select class="form-control" id="anioSeleccionado" name="anio">
                     @php
@@ -25,7 +25,7 @@
                 </select>
             </div>
         
-            <div class="form-group">
+            <div class="form-group mt-3">
                 <label for="mesSeleccionado">Seleccione un Mes:</label>
                 <select class="form-control" id="mesSeleccionado" name="mes">
                     @php
@@ -45,7 +45,7 @@
                 </select>
             </div>
         
-            <button type="submit" class="btn btn-primary">Mostrar</button>
+            <button type="submit" class="btn btn-primary mt-3">Mostrar</button>
         </form>
         
         
@@ -59,7 +59,7 @@
             $totalMonto = 0;
         @endphp
 
-        <div class="container">
+        <div class="container mt-5">
             <div class="row">
                 <div class="col">
                     <h2>Ingresos del mes</h2>

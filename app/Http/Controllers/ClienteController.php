@@ -12,6 +12,9 @@ use App\Models\Tipo;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
+use App\Models\CompraPromocion;
+
+
 
 class ClienteController extends Controller
 {
@@ -92,9 +95,16 @@ class ClienteController extends Controller
 
         $cliente = Cliente::find($id);
 
-//        dd($cortes);
+        $hoy = date('Y-m-d'); // Obtener la fecha de hoy
 
-        return view ('/cliente.edit')->with('cliente', $cliente)->with('cortes', $cortes);
+        // Obtener las promociones vigentes que no han expirado
+        $promocionesVigentes = CompraPromocion::where('cliente_id', $id)
+                                            ->where('fecha_expiracion', '>=', $hoy)
+                                            ->get();
+
+        // dd($promocionesVigentes);
+
+        return view ('/cliente.edit')->with('cliente', $cliente)->with('cortes', $cortes)->with('promocionesVigentes', $promocionesVigentes);
     }
 
     /**
@@ -138,5 +148,33 @@ class ClienteController extends Controller
         $cliente = Cliente::where('id',$id)->first();;
         $cliente->delete();
         return back()->with('info', 'Fue eliminado exitosamente');
+    }
+
+    public function mostrarFormularioCompra($clienteId)
+    {
+        $cliente = Cliente::findOrFail($clienteId);
+        $promociones = Promocion::all(); // Obtener todas las promociones disponibles
+        return view('cliente.comprar_promocion', compact('cliente', 'promociones'));
+    }
+
+    public function comprarPromocion(Request $request, $clienteId)
+    {
+        $this->validate($request, [
+            'promocion_id' => 'required|exists:promociones,id',
+        ]);
+
+        $cliente = Cliente::findOrFail($clienteId);
+        $promocion = Promocion::findOrFail($request->promocion_id);
+        $fechaCompra = Carbon::now();
+        $fechaExpiracion = $fechaCompra->copy()->addDays(30);
+
+        $compraPromocion = CompraPromocion::create([
+            'cliente_id' => $cliente->id,
+            'promocion_id' => $promocion->id,
+            'fecha_compra' => $fechaCompra,
+            'fecha_expiracion' => $fechaExpiracion
+        ]);
+
+        return redirect('/cliente')->with('success', 'Paquete comprado exitosamente, expira el ' . $fechaExpiracion->toDateString());
     }
 }
