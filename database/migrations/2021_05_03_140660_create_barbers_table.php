@@ -18,6 +18,7 @@ class CreateBarbersTable extends Migration
         Schema::create('barbers', function (Blueprint $table) {
             $table->id()->autoIncrement();
             $table->text('nombre');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -29,6 +30,7 @@ class CreateBarbersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('barbers');
-    }
+        Schema::table('barbers', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });    }
 }

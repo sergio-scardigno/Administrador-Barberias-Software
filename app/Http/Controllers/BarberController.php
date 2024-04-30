@@ -112,7 +112,7 @@ class BarberController extends Controller
 //     */
     public function destroy($id)
     {
-        $barber = Barber::where('id',$id)->first();;
+        $barber = Barber::findOrFail($id);
         $barber->delete();
         return back()->with('info', 'Fue eliminado exitosamente');
     }
