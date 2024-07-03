@@ -1,6 +1,9 @@
-
 ## Sistema para administracion de Barberias
 
-# Comandos para correr con artisan
-php artisan migrate:fresh --seed
+# Crear la key
 
+php artisan key:generate
+
+# Comandos para correr con artisan
+
+php artisan migrate:fresh --seed
