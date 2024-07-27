@@ -11,6 +11,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             TipoSeeder::class, // Actualizado a TipoSeeder
             MediosPagoTableSeeder::class,
+            UsersTableSeeder::class,
         ]);
     }
 }
