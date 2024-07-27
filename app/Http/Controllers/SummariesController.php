@@ -26,28 +26,39 @@ class SummariesController extends Controller
      */
     public function index(Request $request)
     {
-        // Obteniendo el año y el mes desde el request, usando el año y mes actual como predeterminado
+        // Obteniendo el año, mes y día desde el request, usando el día actual como predeterminado
         $anioSeleccionado = $request->input('anio', Carbon::now()->year);
         $mesSeleccionado = $request->input('mes', Carbon::now()->month);
-
-        // Creando un objeto Carbon con el año y el mes seleccionados
-        $fechaSeleccionada = Carbon::createFromDate($anioSeleccionado, $mesSeleccionado, 1);
-
-        // Utiliza $fechaSeleccionada para filtrar tus consultas por el mes y el año seleccionados
+        $diaSeleccionado = $request->input('dia', Carbon::now()->day);
+    
+        // Creando un objeto Carbon con el año, mes y día seleccionados
+        $fechaSeleccionada = Carbon::createFromDate($anioSeleccionado, $mesSeleccionado, $diaSeleccionado);
+    
+        // Ingresos del día seleccionado
+        $ingresosDelDia = Corte::whereDate('fecha', $fechaSeleccionada)
+            ->whereIn('barbers_id', [1])
+            ->join('barbers', 'barbers_id', '=', 'barbers.id')
+            ->get();
+        $totalIngresosDelDia = $ingresosDelDia->sum('monto');
+    
+        // Ingresos del mes seleccionado
         $total_corte_month = Corte::whereYear('fecha', '=', $fechaSeleccionada->year)
             ->whereMonth('fecha', '=', $fechaSeleccionada->month)
             ->whereIn('barbers_id', [1])
             ->join('barbers', 'barbers_id', '=', 'barbers.id')
             ->get();
-
+        $totalIngresosMes = $total_corte_month->sum('monto');
+    
+        // Gastos del mes seleccionado
         $gastosMes = Gasto::whereYear('created_at', '=', $fechaSeleccionada->year)
             ->whereMonth('created_at', '=', $fechaSeleccionada->month)
             ->get();
-
-        // Devuelve la vista con los datos filtrados por el año y el mes seleccionados
-        return view('/summaries.index', compact('total_corte_month', 'gastosMes'));
- 
+        $totalGastos = $gastosMes->sum('monto');
+    
+        // Devuelve la vista con los datos filtrados por el año, mes y día seleccionados
+        return view('summaries.index', compact('total_corte_month', 'gastosMes', 'ingresosDelDia', 'totalIngresosDelDia', 'totalIngresosMes', 'totalGastos'));
     }
+    
     
 
     /**
