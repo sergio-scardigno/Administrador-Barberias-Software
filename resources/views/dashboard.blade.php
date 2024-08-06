@@ -106,56 +106,47 @@
 
             <div class="col-lg-8">
                 <h1>Movimientos</h1>
-                <div class="grid grid-flow-col auto-cols-max" width="500">
-                    <table class="table-auto custom-table">
-                        <thead>
-                            <tr>
-                                <!-- <th class="border-2 text-left pr-12 bg-indigo-200">id</th> -->
-                                <th class="border-2 text-left pr-12 bg-indigo-200">Barbero</th>
-                                <th class="border-2 text-left pr-12 bg-indigo-200">Cliente</th>
-                                <th class="border-2 text-left pr-12 bg-indigo-200">Monto</th>
-                                <th class="border-2 text-left pr-12 bg-indigo-200">Fecha</th>
-                                <th class="border-2 text-left bg-indigo-200">Descripción</th>
-
-                                <th class="border-2 text-left pr-12 bg-indigo-200">Editar</th>
-                                <th class="border-2 text-left pr-12 bg-indigo-200">Borrar</th>
-
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($clientes as $cliente)
+                <div class="grid grid-flow-col auto-cols-max" style="width: 500px;">
+                    <div class="table-container" style="height: 400px; overflow-y: auto;">
+                        <table class="table-auto custom-table w-full">
+                            <thead>
+                                <tr>
+                                    <!-- <th class="border-2 text-left pr-12 bg-indigo-200">id</th> -->
+                                    <th class="border-2 text-left pr-12 bg-indigo-200">Barbero</th>
+                                    <th class="border-2 text-left pr-12 bg-indigo-200">Cliente</th>
+                                    <th class="border-2 text-left pr-12 bg-indigo-200">Monto</th>
+                                    <th class="border-2 text-left pr-12 bg-indigo-200">Fecha</th>
+                                    <th class="border-2 text-left bg-indigo-200">Descripción</th>
+                                    <th class="border-2 text-left pr-12 bg-indigo-200">Editar</th>
+                                    <th class="border-2 text-left pr-12 bg-indigo-200">Borrar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($clientes as $cliente)
                                 <tr>
                                     <!-- <td class="border-2 text-left pr-12 bg-indigo-100">{{ $cliente->id }}</td> -->
-                                    <td class="border-2 text-left pr-12 bg-indigo-100">{{ $cliente->nombre_barbers }}
-                                    </td>
-                                    <td class="border-2 text-left pr-12 bg-indigo-100">{{ $cliente->cliente_nombre }}
-                                        , {{ $cliente->apellido }}</td>
-
+                                    <td class="border-2 text-left pr-12 bg-indigo-100">{{ $cliente->nombre_barbers }}</td>
+                                    <td class="border-2 text-left pr-12 bg-indigo-100">{{ $cliente->cliente_nombre }}, {{ $cliente->apellido }}</td>
                                     <td class="border-2 text-left pr-12 bg-indigo-100">{{ $cliente->monto }}</td>
                                     <td class="border-2 text-left pr-6 bg-indigo-100">{{ $cliente->fecha }}</td>
                                     <td class="border-2 text-left bg-indigo-100">{{ $cliente->tipo_nombre }}</td>
-
-
                                     <td>
-                                        <a href="{{ route('corte.edit', $cliente->id) }}"
-                                            class="bg-indigo-300 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                                            role="button">Editar</a>
+                                        <a href="{{ route('corte.edit', $cliente->id) }}" class="bg-indigo-300 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" role="button">Editar</a>
                                     </td>
                                     <td>
                                         <form action="{{ route('corte.destroy', $cliente->id) }}" method="get">
                                             {{ csrf_field() }}
                                             <input type="hidden" name="_method">
-                                            <button
-                                                class="bg-red-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                                BORRAR
-                                            </button>
+                                            <button class="bg-red-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">BORRAR</button>
                                         </form>
                                     </td>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
+                
 
 
 

@@ -33,21 +33,29 @@ class CorteController extends Controller
     public function index()
     {
 
-//        Funcion que muesta la tabla de dashboard con nombres de Barber y clientes
-
-//        Empieza acá
-
-        $clientes = Corte::join('clientes', 'clientes_id', '=', 'clientes.id')
-            ->join('barbers', 'barbers_id', '=', 'barbers.id')
-            ->join('tipos', 'tipos_id', '=', 'tipos.id')
-            ->select('cortes.*', 'barbers.nombre as nombre_barbers', 'tipos.nombres as tipo_nombre', 'clientes.nombre as cliente_nombre', 'apellido')
-            ->orderBy('fecha', 'desc')
-            ->paginate(6);            ;
-
-//        Termina acá
+        //Funcion que muesta la tabla de dashboard con nombres de Barber y clientes
 
 
-//        dd($clientes);
+        // $clientes = Corte::join('clientes', 'clientes_id', '=', 'clientes.id')
+        //     ->join('barbers', 'barbers_id', '=', 'barbers.id')
+        //     ->join('tipos', 'tipos_id', '=', 'tipos.id')
+        //     ->select('cortes.*', 'barbers.nombre as nombre_barbers', 'tipos.nombres as tipo_nombre', 'clientes.nombre as cliente_nombre', 'apellido')
+        //     ->orderBy('fecha', 'desc')
+        //     ->paginate(10); 
+        
+        // Funcion trae todos los cortes del dia
+        
+        $clientes = Corte::join('clientes', 'cortes.clientes_id', '=', 'clientes.id')
+            ->join('barbers', 'cortes.barbers_id', '=', 'barbers.id')
+            ->join('tipos', 'cortes.tipos_id', '=', 'tipos.id')
+            ->select('cortes.*', 'barbers.nombre as nombre_barbers', 'tipos.nombres as tipo_nombre', 'clientes.nombre as cliente_nombre', 'clientes.apellido')
+            ->whereDate('cortes.fecha', Carbon::today())
+            ->orderBy('cortes.fecha', 'desc')
+            ->get();    
+
+
+
+        //dd($clientes);
 
         $cliente_totales = Cliente::orderBy('nombre')->get();
         $barbers = Barber::all();
@@ -60,11 +68,10 @@ class CorteController extends Controller
 
         $gastos = Gasto::all();
 
-//        dd($tipos);
+        //dd($tipos);
 
         return view('/dashboard')->with('barbers', $barbers)->with('clientes', $clientes)->with('tipos', $tipos)->with('cortes', $cortes)->with('cliente_totales', $cliente_totales)->with('pagos', $pagos);
 
-//        return view('/dashboard');
 
     }
 
@@ -304,5 +311,3 @@ class CorteController extends Controller
 
 
 }
-
-
