@@ -140,7 +140,35 @@
         </div>
 
         @endif
+
+        <div class="row">
+            <div class="col">
+                <h2>Cantidad de Cortes por Día</h2>
+                <table class="table table-light">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Cantidad de Cortes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($cortesPorDia as $corte)
+                            <tr>
+                                <td>{{ $corte->fecha }}</td>
+                                <td>{{ $corte->cantidad }}</td>
+                            </tr>
+                        @endforeach
+                        <tr>
+                            <td><strong>Total de Cortes en el Mes</strong></td>
+                            <td><strong>{{ $totalCortesMes }}</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
+
+
 
 
 </x-app-layout>

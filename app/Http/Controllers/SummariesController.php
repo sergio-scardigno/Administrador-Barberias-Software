@@ -54,9 +54,27 @@ class SummariesController extends Controller
             ->whereMonth('created_at', '=', $fechaSeleccionada->month)
             ->get();
         $totalGastos = $gastosMes->sum('monto');
+
+        // Cantidad de cortes por día del mes seleccionado
+        $cortesPorDia = Corte::selectRaw('DATE(fecha) as fecha, COUNT(*) as cantidad')
+            ->whereYear('fecha', '=', $fechaSeleccionada->year)
+            ->whereMonth('fecha', '=', $fechaSeleccionada->month)
+            ->groupBy('fecha')
+            ->orderBy('fecha', 'asc')
+            ->get();
+
+        // Total de cortes del mes seleccionado
+        $totalCortesMes = Corte::whereYear('fecha', '=', $fechaSeleccionada->year)
+            ->whereMonth('fecha', '=', $fechaSeleccionada->month)
+            ->count();
     
         // Devuelve la vista con los datos filtrados por el año, mes y día seleccionados
-        return view('summaries.index', compact('total_corte_month', 'gastosMes', 'ingresosDelDia', 'totalIngresosDelDia', 'totalIngresosMes', 'totalGastos'));
+        return view('summaries.index', compact(
+            'total_corte_month', 'gastosMes', 'ingresosDelDia', 
+            'totalIngresosDelDia', 'totalIngresosMes', 'totalGastos', 
+            'cortesPorDia', 'totalCortesMes'
+        ));
+        
     }
     
     
