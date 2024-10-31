@@ -24,7 +24,7 @@
                         <select id="barbers_id" name="barbers_id" autocomplete="country"
                             class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                             @foreach ($barbers as $barber)
-                                <option value="{{ $barber->id }}">{{ $barber->nombre }}</option>
+                            <option value="{{ $barber->id }}">{{ $barber->nombre }}</option>
                             @endforeach
                         </select>
 
@@ -37,7 +37,8 @@
                         {{--                    <select id="cliente_id" name="cliente_id" autocomplete="cliente" --}}
                         {{--                            class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"> --}}
                         {{--                        @foreach ($cliente_totales ?? '' as $cliente_totale) --}}
-                        {{--                            <option value="{{ $cliente_totale->id }}">{{ $cliente_totale->nombre }} --}}
+                        {{--                            <option value="{{ $cliente_totale->id }}">{{ $cliente_totale->nombre }}
+                        --}}
                         {{--                                , {{ $cliente_totale->apellido }}</option> --}}
                         {{--                        @endforeach --}}
                         {{--                    </select> --}}
@@ -56,7 +57,7 @@
                         <select id="tipos_id" name="tipos_id" autocomplete="tipos_id"
                             class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                             @foreach ($tipos as $tipo)
-                                <option value="{{ $tipo->id }}">{{ $tipo->nombres }}</option>
+                            <option value="{{ $tipo->id }}">{{ $tipo->nombres }}</option>
                             @endforeach
                         </select>
 
@@ -65,7 +66,7 @@
                         <select id="medio_de_pago" name="medio_de_pago" autocomplete="medio_de_pago"
                             class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                             @foreach ($pagos as $pago)
-                                <option value="{{ $pago->id }}">{{ $pago->pagos }}</option>
+                            <option value="{{ $pago->id }}">{{ $pago->pagos }}</option>
                             @endforeach
                         </select>
 
@@ -105,7 +106,7 @@
 
 
             <div class="col-lg-8">
-                <h1>Movimientos</h1>
+                <h1>Ultimos Cortes</h1>
                 <div class="grid grid-flow-col auto-cols-max" style="width: 500px;">
                     <div class="table-container" style="height: 400px; overflow-y: auto;">
                         <table class="table-auto custom-table w-full">
@@ -125,19 +126,24 @@
                                 @foreach ($clientes as $cliente)
                                 <tr>
                                     <!-- <td class="border-2 text-left pr-12 bg-indigo-100">{{ $cliente->id }}</td> -->
-                                    <td class="border-2 text-left pr-12 bg-indigo-100">{{ $cliente->nombre_barbers }}</td>
-                                    <td class="border-2 text-left pr-12 bg-indigo-100">{{ $cliente->cliente_nombre }}, {{ $cliente->apellido }}</td>
+                                    <td class="border-2 text-left pr-12 bg-indigo-100">{{ $cliente->nombre_barbers }}
+                                    </td>
+                                    <td class="border-2 text-left pr-12 bg-indigo-100">{{ $cliente->cliente_nombre }},
+                                        {{ $cliente->apellido }}</td>
                                     <td class="border-2 text-left pr-12 bg-indigo-100">{{ $cliente->monto }}</td>
                                     <td class="border-2 text-left pr-6 bg-indigo-100">{{ $cliente->fecha }}</td>
                                     <td class="border-2 text-left bg-indigo-100">{{ $cliente->tipo_nombre }}</td>
                                     <td>
-                                        <a href="{{ route('corte.edit', $cliente->id) }}" class="bg-indigo-300 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" role="button">Editar</a>
+                                        <a href="{{ route('corte.edit', $cliente->id) }}"
+                                            class="bg-indigo-300 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                            role="button">Editar</a>
                                     </td>
                                     <td>
                                         <form action="{{ route('corte.destroy', $cliente->id) }}" method="get">
                                             {{ csrf_field() }}
                                             <input type="hidden" name="_method">
-                                            <button class="bg-red-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">BORRAR</button>
+                                            <button
+                                                class="bg-red-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">BORRAR</button>
                                         </form>
                                     </td>
                                 </tr>
@@ -146,7 +152,7 @@
                         </table>
                     </div>
                 </div>
-                
+
 
 
 
@@ -168,15 +174,15 @@
                                     <td class="border-2 text-left pr-12 bg-indigo-100">
                                         {{ ucfirst($cliente_totale->nombre) }},
                                         {{ ucfirst($cliente_totale->apellido) }}</td>
-                            
+
                                     <td>
                                         <a href="{{ route('cliente.edit', $cliente_totale->id) }}"
                                             class="bg-indigo-300 hover:bg-blue-700 text-white font-bold py-0 px-4 rounded"
                                             role="button">Historial</a>
                                     </td>
                                 </tr>
-                            @endforeach
-                            
+                                @endforeach
+
                             </tbody>
                         </table>
                         <select id="cliente_id" name="cliente_id" style="width: 300px;"
@@ -186,19 +192,20 @@
                     <div id="turnosHoy">
                         <h3>Turnos de hoy</h3>
                         <ul id="listaTurnos"></ul>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="row">
-            <div class="col"></div>
-            <div class="col"></div>
-            <div class="col"> <!-- Contenedor del GIF -->
-                <div style="padding-left: 100px" id="gifContainer"></div>
+            <div class="row">
+                <div class="col"></div>
+                <div class="col"></div>
+                <div class="col">
+                    <!-- Contenedor del GIF -->
+                    <div style="padding-left: 100px" id="gifContainer"></div>
+                </div>
             </div>
-        </div>
 
-</div>
+        </div>
 
 
 </x-app-layout>
@@ -218,7 +225,8 @@ $(document).ready(function() {
                 $('#listaTurnos').empty();
                 turnos.forEach(function(turno) {
                     // Mostrar los horarios y los nombres de los turnos en la lista
-                    $('#listaTurnos').append('<li>' + turno.start + ' - ' + turno.end + ' : ' + turno.title + '</li>');
+                    $('#listaTurnos').append('<li>' + turno.start + ' - ' + turno.end +
+                        ' : ' + turno.title + '</li>');
                 });
             } else {
                 $('#listaTurnos').html('<li>No hay turnos para hoy.</li>');
@@ -229,11 +237,6 @@ $(document).ready(function() {
         }
     });
 });
-
-
-
-
-
 </script>
 
 
@@ -247,14 +250,18 @@ $(document).ready(function() {
                 type: 'GET',
                 dataType: 'json',
                 success: function(data) {
-                    if (data.tiene_promocion && data.promociones.some(promo => promo.value > 0)) {
-                        var totalValue = data.promociones.reduce((sum, promo) => sum + promo.value, 0); // Calcula el total de value
+                    if (data.tiene_promocion && data.promociones.some(promo => promo.value >
+                            0)) {
+                        var totalValue = data.promociones.reduce((sum, promo) => sum + promo
+                            .value, 0); // Calcula el total de value
                         $('#promocion').prop('checked', true).prop('disabled', false);
                         $('#monto, #descripcion, #medio_de_pago').hide();
                         tienePromocion = true;
                         Swal.fire({
                             title: 'Promoción Vigente',
-                            text: 'El cliente tiene ' + data.promociones.length + ' promoción(es) vigente(s) con un total de ' + totalValue + ' crédito(s) restante(s).',
+                            text: 'El cliente tiene ' + data.promociones.length +
+                                ' promoción(es) vigente(s) con un total de ' +
+                                totalValue + ' crédito(s) restante(s).',
                             icon: 'info',
                             confirmButtonText: 'Entendido'
                         });
@@ -320,93 +327,93 @@ $(document).ready(function() {
 
 
 <script type="text/javascript">
-    $('.itemName').select2({
-        language: "es",
-        placeholder: 'Buscar cliente',
-        ajax: {
-            url: '/autocomplete',
-            dataType: 'json',
-            delay: 250,
-            processResults: function(data) {
-                return {
-                    results: $.map(data, function(item) {
-                        return {
-                            text: item.nombre + ', ' + item.apellido,
-                            id: item.id
-                        }
-                    })
-                };
-            },
-            cache: true
-        }
-    });
+$('.itemName').select2({
+    language: "es",
+    placeholder: 'Buscar cliente',
+    ajax: {
+        url: '/autocomplete',
+        dataType: 'json',
+        delay: 250,
+        processResults: function(data) {
+            return {
+                results: $.map(data, function(item) {
+                    return {
+                        text: item.nombre + ', ' + item.apellido,
+                        id: item.id
+                    }
+                })
+            };
+        },
+        cache: true
+    }
+});
 
-    $('.itemName').on('select2:select', function(e) {
-        var data = $(e.currentTarget).val();
-        return data;
-    });
+$('.itemName').on('select2:select', function(e) {
+    var data = $(e.currentTarget).val();
+    return data;
+});
 </script>
 
 <script type="text/javascript">
-    $('.itemName-h').select2({
-        language: "es",
-        placeholder: 'Buscar cliente',
-        ajax: {
-            url: '/autocomplete',
-            dataType: 'json',
-            delay: 250,
-            processResults: function(data) {
-                return {
-                    results: $.map(data, function(item) {
-                        return {
-                            text: item.nombre + ', ' + item.apellido,
-                            id: item.id
-                        }
-                    })
-                };
-            },
-            cache: true
-        }
-    });
+$('.itemName-h').select2({
+    language: "es",
+    placeholder: 'Buscar cliente',
+    ajax: {
+        url: '/autocomplete',
+        dataType: 'json',
+        delay: 250,
+        processResults: function(data) {
+            return {
+                results: $.map(data, function(item) {
+                    return {
+                        text: item.nombre + ', ' + item.apellido,
+                        id: item.id
+                    }
+                })
+            };
+        },
+        cache: true
+    }
+});
 
-    $('.itemName-h').on('select2:select', function(e) {
-        var data = $(e.currentTarget).val();
+$('.itemName-h').on('select2:select', function(e) {
+    var data = $(e.currentTarget).val();
 
-        location.href = '/cliente/' + data;
-    });
+    location.href = '/cliente/' + data;
+});
 </script>
 
 <script>
-    const apiKey = "O9oE5Ym1Q0Fy3bPgYzaKAMiRxGSgf3Cy"; // Asegúrate de reemplazar esto con tu clave API real
-    const searchTerm = "barber";
-    const limit = 10; // Obtener 10 resultados para tener de dónde elegir
-    const url = `https://api.giphy.com/v1/gifs/search?api_key=${apiKey}&q=${searchTerm}&limit=${limit}`;
+const apiKey = "O9oE5Ym1Q0Fy3bPgYzaKAMiRxGSgf3Cy"; // Asegúrate de reemplazar esto con tu clave API real
+const searchTerm = "barber";
+const limit = 10; // Obtener 10 resultados para tener de dónde elegir
+const url = `https://api.giphy.com/v1/gifs/search?api_key=${apiKey}&q=${searchTerm}&limit=${limit}`;
 
-    fetch(url)
-        .then(response => response.json())
-        .then(data => {
-            if (data.data.length > 0) {
-                // Elegir un GIF al azar de los resultados
-                const randomIndex = Math.floor(Math.random() * data.data.length);
-                const gifUrl = data.data[randomIndex].images.original.url;
+fetch(url)
+    .then(response => response.json())
+    .then(data => {
+        if (data.data.length > 0) {
+            // Elegir un GIF al azar de los resultados
+            const randomIndex = Math.floor(Math.random() * data.data.length);
+            const gifUrl = data.data[randomIndex].images.original.url;
 
-                // Crear un contenedor div para el GIF
-                const gifWrapper = document.createElement('div');
-                document.getElementById('gifContainer').style.display = 'flex';
-                document.getElementById('gifContainer').style.justifyContent = 'flex-end';
+            // Crear un contenedor div para el GIF
+            const gifWrapper = document.createElement('div');
+            document.getElementById('gifContainer').style.display = 'flex';
+            document.getElementById('gifContainer').style.justifyContent = 'flex-end';
 
-                // Crear el elemento img para el GIF
-                const imgElement = document.createElement('img');
-                imgElement.src = gifUrl;
-                imgElement.style.width = '80%'; // Hace que el GIF se ajuste al contenedor
-                imgElement.style.height = 'auto';
+            // Crear el elemento img para el GIF
+            const imgElement = document.createElement('img');
+            imgElement.src = gifUrl;
+            imgElement.style.width = '80%'; // Hace que el GIF se ajuste al contenedor
+            imgElement.style.height = 'auto';
 
-                // Añadir el img al wrapper, y luego el wrapper al contenedor principal
-                gifWrapper.appendChild(imgElement);
-                document.getElementById('gifContainer').appendChild(gifWrapper);
-            } else {
-                console.log('No se encontraron resultados');
-            }
-        })
-        .catch(error => console.error('Error:', error));
+            // Añadir el img al wrapper, y luego el wrapper al contenedor principal
+            gifWrapper.appendChild(imgElement);
+            document.getElementById('gifContainer').appendChild(gifWrapper);
+        } else {
+            console.log('No se encontraron resultados');
+        }
+    })
+    .catch(error => console.error('Error:', error));
 </script>

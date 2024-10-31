@@ -75,6 +75,20 @@ class CorteController extends Controller
 
     }
 
+    public function list ()
+    {
+
+        $listadoCortes = Corte::join('clientes', 'cortes.clientes_id', '=', 'clientes.id')
+        ->join('barbers', 'cortes.barbers_id', '=', 'barbers.id')
+        ->join('tipos', 'cortes.tipos_id', '=', 'tipos.id')
+        ->select('cortes.*', 'barbers.nombre as nombre_barbers', 'tipos.nombres as tipo_nombre', 'clientes.nombre as cliente_nombre', 'clientes.apellido')
+        ->orderBy('cortes.fecha', 'desc')
+        ->get();  
+
+        
+        return view ('/corte.index')->with('listadoCortes', $listadoCortes);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

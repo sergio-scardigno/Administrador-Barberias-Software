@@ -27,7 +27,7 @@ class CorteFactory extends Factory
         return [
             'clientes_id' => Cliente::inRandomOrder()->first()->id, // Suponiendo que tienes al menos 10 clientes
             'tipos_id' => Tipo::inRandomOrder()->first()->id, // Suponiendo que tienes algunos tipos definidos
-            'fecha' => $this->faker->dateTimeThisYear()->format('Y-m-d H:i:s'),
+            'fecha' => $this->faker->dateTimeThisYear()->format('Y-m-d H:i:s'), // para usar el dia de hoy 'fecha' => Carbon::now()->format('Y-m-d H:i:s'),
             'descripcion' => $this->faker->sentence,
             'barbers_id' => Barber::inRandomOrder()->first()->id, // Suponiendo que tienes algunos barberos
             'monto' => $this->faker->randomNumber(3),

@@ -67,12 +67,28 @@ class SummariesController extends Controller
         $totalCortesMes = Corte::whereYear('fecha', '=', $fechaSeleccionada->year)
             ->whereMonth('fecha', '=', $fechaSeleccionada->month)
             ->count();
+
+        $pagosMercadoPago = Corte::whereYear('fecha', $fechaSeleccionada->year)
+            ->whereMonth('fecha', $fechaSeleccionada->month)
+            ->join('medios_de_pagos', 'cortes.medio_de_pago', '=', 'medios_de_pagos.id')
+            ->where('medios_de_pagos.pagos', 'Mercado Pago')
+            ->select('cortes.id', 'medios_de_pagos.pagos')
+            ->get();
+
+        //var_dump($pagosMercadoPago);
+
+        // Verifica el contenido de los datos obtenidos
+        //dd($pagosMercadoPago);
+
+
     
+
+
         // Devuelve la vista con los datos filtrados por el año, mes y día seleccionados
         return view('summaries.index', compact(
             'total_corte_month', 'gastosMes', 'ingresosDelDia', 
             'totalIngresosDelDia', 'totalIngresosMes', 'totalGastos', 
-            'cortesPorDia', 'totalCortesMes'
+            'cortesPorDia', 'totalCortesMes', 'pagosMercadoPago'
         ));
         
     }

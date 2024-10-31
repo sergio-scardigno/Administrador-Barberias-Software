@@ -71,11 +71,15 @@ Route::post('/actualizar-promocion/{cliente_id}', [CompraPromocionController::cl
 
 
 
+Route::get('/cortes', [CorteController::class, 'list'])->middleware(['auth'])->name('corte.list');
+
 
 Route::get('corte.store',[CorteController::class,'store'])->name('corte.store');
 Route::get('corte/{id}',[CorteController::class,'edit'])->name('corte.edit');
 Route::patch('/corte/{id}', [CorteController::class,'update'])->name('corte.update');
 Route::get('corte/{id}/destroy',[CorteController::class,'destroy'])->name('corte.destroy');
+
+
 
 Route::get('borrados/',[CorteController::class,'delete'])->name('corte.delete');
 Route::get('borrados/{id}', [CorteController::class,'restore'])->name('restore.delete');
