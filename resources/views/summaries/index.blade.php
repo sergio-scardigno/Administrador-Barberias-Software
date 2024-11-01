@@ -160,28 +160,28 @@
             </div>
         </div>
 
-        <h1>Pagos Realizados con Mercado Pago</h1>
-
-        @if($pagosMercadoPago->isEmpty())
+        <h2>Pagos Realizados con Mercado Pago</h2>
+        @if($pagosMercadoPago == 0)
         <p>No hay pagos realizados con Mercado Pago en este mes.</p>
         @else
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Tipo de Pago</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($pagosMercadoPago as $pago)
-                <tr>
-                    <td>{{ $pago->id }}</td>
-                    <td>{{ $pago->pagos }}</td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+        <p>Total Pagos Mercado Pago: ${{ number_format($pagosMercadoPago, 2) }}</p>
         @endif
+
+        <h2>Pagos Realizados con Cuenta DNI</h2>
+        @if($pagosCuentaDNI == 0)
+        <p>No hay pagos realizados con Mercado Pago en este mes.</p>
+        @else
+        <p>Total Pagos Mercado Pago: ${{ number_format($pagosCuentaDNI, 2) }}</p>
+        @endif
+
+        <h2>Pagos Realizados con Efectivo</h2>
+        @if($pagosEfectivo == 0)
+        <p>No hay pagos realizados con Mercado Pago en este mes.</p>
+        @else
+        <p>Total Pagos Mercado Pago: ${{ number_format($pagosEfectivo, 2) }}</p>
+        @endif
+
+
     </div>
 
 

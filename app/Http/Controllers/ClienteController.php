@@ -13,7 +13,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
 use App\Models\CompraPromocion;
-
+use App\Models\Promocion;
+use Illuminate\Support\Carbon;
 
 
 class ClienteController extends Controller
@@ -21,7 +22,7 @@ class ClienteController extends Controller
     /**
      * Display a listing of the resource.
      *
-//     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response
      */
 
     public function index()
@@ -34,7 +35,7 @@ class ClienteController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-//     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response
      */
     public function create()
     {
@@ -44,8 +45,8 @@ class ClienteController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-//     * @param  \Illuminate\Http\Request  $request
-//     * @return \Illuminate\Http\Response
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
@@ -75,8 +76,8 @@ class ClienteController extends Controller
     /**
      * Display the specified resource.
      *
-//     * @param  int  $id
-//     * @return \Illuminate\Http\Response
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
@@ -86,8 +87,8 @@ class ClienteController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-//     * @param  int  $id
-//     * @return \Illuminate\Http\Response
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
@@ -110,9 +111,9 @@ class ClienteController extends Controller
     /**
      * Update the specified resource in storage.
      *
-//     * @param  \Illuminate\Http\Request  $request
-//     * @param  int  $id
-//     * @return \Illuminate\Http\Response
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
@@ -140,8 +141,8 @@ class ClienteController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-//     * @param  int  $id
-//     * @return \Illuminate\Http\Response
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {

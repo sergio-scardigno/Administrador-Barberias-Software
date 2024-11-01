@@ -72,10 +72,28 @@ class SummariesController extends Controller
             ->whereMonth('fecha', $fechaSeleccionada->month)
             ->join('medios_de_pagos', 'cortes.medio_de_pago', '=', 'medios_de_pagos.id')
             ->where('medios_de_pagos.pagos', 'Mercado Pago')
-            ->select('cortes.id', 'medios_de_pagos.pagos')
-            ->get();
+            ->select('cortes.id', 'medios_de_pagos.pagos','monto')
+            ->sum('monto');
+        
+        $pagosEfectivo = Corte::whereYear('fecha', $fechaSeleccionada->year)
+            ->whereMonth('fecha', $fechaSeleccionada->month)
+            ->join('medios_de_pagos', 'cortes.medio_de_pago', '=', 'medios_de_pagos.id')
+            ->where('medios_de_pagos.pagos', 'Efectivo')
+            ->select('cortes.id', 'medios_de_pagos.pagos','monto')
+            ->sum('monto');
 
-        //var_dump($pagosMercadoPago);
+        $pagosCuentaDNI = Corte::whereYear('fecha', $fechaSeleccionada->year)
+            ->whereMonth('fecha', $fechaSeleccionada->month)
+            ->join('medios_de_pagos', 'cortes.medio_de_pago', '=', 'medios_de_pagos.id')
+            ->where('medios_de_pagos.pagos', 'Cuenta DNI')
+            ->select('cortes.id', 'medios_de_pagos.pagos','monto')
+            ->sum('monto');
+            
+            
+
+            
+
+        //dd($pagosMercadoPago);
 
         // Verifica el contenido de los datos obtenidos
         //dd($pagosMercadoPago);
@@ -88,7 +106,7 @@ class SummariesController extends Controller
         return view('summaries.index', compact(
             'total_corte_month', 'gastosMes', 'ingresosDelDia', 
             'totalIngresosDelDia', 'totalIngresosMes', 'totalGastos', 
-            'cortesPorDia', 'totalCortesMes', 'pagosMercadoPago'
+            'cortesPorDia', 'totalCortesMes', 'pagosMercadoPago', 'pagosEfectivo', 'pagosCuentaDNI'
         ));
         
     }
