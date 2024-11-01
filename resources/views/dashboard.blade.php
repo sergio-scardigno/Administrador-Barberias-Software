@@ -106,7 +106,7 @@
 
 
             <div class="col-lg-8">
-                <h1>Ultimos Cortes</h1>
+                <h1>Cortes del dia</h1>
                 <div class="grid grid-flow-col auto-cols-max" style="width: 500px;">
                     <div class="table-container" style="height: 400px; overflow-y: auto;">
                         <table class="table-auto custom-table w-full">
